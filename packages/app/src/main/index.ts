@@ -509,11 +509,6 @@ app.whenReady().then(async () => {
   }, SESSION_SWEEP_INTERVAL_MS);
 
   app.on("activate", () => {
-    if (app.isPackaged && process.platform === "darwin") {
-      openSetupWindow();
-      return;
-    }
-
     if (BrowserWindow.getAllWindows().length === 0) {
       mainWindow = createMainWindow();
       if (tray !== null) {
@@ -1461,7 +1456,11 @@ function createTrayIcon() {
     quality: "best",
   });
 
-  resizedIcon.setTemplateImage(false);
+  if (process.platform === "darwin") {
+    resizedIcon.setTemplateImage(true);
+  } else {
+    resizedIcon.setTemplateImage(false);
+  }
   return resizedIcon;
 }
 
@@ -1470,6 +1469,7 @@ function applyMacTrayOnlyBehavior() {
     return;
   }
 
+  app.setActivationPolicy("accessory");
   void app.dock?.hide();
 }
 

@@ -12,8 +12,10 @@ files:
 extraResources:
   - from: resources/hooklusion.png
     to: hooklusion.png
-  - from: .hooklusion/profiles/gpchan-default
+  - from: resources/bundled-profiles/gpchan-default
     to: bundled-profiles/gpchan-default
+  - from: ../../assets/gpchan-default
+    to: bundled-profiles/gpchan-default/assets
   - from: ../../assets/office-assistant
     to: bundled-assets/office-assistant
 
