@@ -56,6 +56,7 @@ __pycache__/
 .project-c/
 packages/app/.hooklusion/
 HANDOFF.md
+docs/private/
 
 # Local assets
 sources/
@@ -67,6 +68,7 @@ assets/*
 !assets/gpchan-default/**
 !assets/office-assistant/
 !assets/office-assistant/**
+assets/deploy/
 !assets/sheets/
 !assets/sheets/gpchan/
 !assets/sheets/gpchan/**
