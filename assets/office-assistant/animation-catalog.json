@@ -1,0 +1,1412 @@
+{
+  "idle:seated_idle": {
+    "state": "idle",
+    "animation": "seated_idle",
+    "row_index": 3,
+    "frame_start": 0,
+    "frame_count": 8,
+    "label": "calm seated idle loop",
+    "tier": "regular",
+    "duration_ms": 220,
+    "loop": true,
+    "sourceRow": {
+      "index": 3,
+      "y0": 282,
+      "y1": 371,
+      "topic": "seated attentive idle and expression changes"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 0,
+          "x0": 35,
+          "x1": 90
+        },
+        "path": "assets/office-assistant/animations/idle/seated_idle/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 1,
+          "x0": 159,
+          "x1": 214
+        },
+        "path": "assets/office-assistant/animations/idle/seated_idle/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 2,
+          "x0": 283,
+          "x1": 338
+        },
+        "path": "assets/office-assistant/animations/idle/seated_idle/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 3,
+          "x0": 410,
+          "x1": 463
+        },
+        "path": "assets/office-assistant/animations/idle/seated_idle/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 4,
+          "x0": 535,
+          "x1": 585
+        },
+        "path": "assets/office-assistant/animations/idle/seated_idle/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 5,
+          "x0": 654,
+          "x1": 710
+        },
+        "path": "assets/office-assistant/animations/idle/seated_idle/frame_005.png"
+      },
+      {
+        "index": 6,
+        "sourceBox": {
+          "index": 6,
+          "x0": 775,
+          "x1": 833
+        },
+        "path": "assets/office-assistant/animations/idle/seated_idle/frame_006.png"
+      },
+      {
+        "index": 7,
+        "sourceBox": {
+          "index": 7,
+          "x0": 899,
+          "x1": 958
+        },
+        "path": "assets/office-assistant/animations/idle/seated_idle/frame_007.png"
+      }
+    ]
+  },
+  "prompt_received:attentive_talk": {
+    "state": "prompt_received",
+    "animation": "attentive_talk",
+    "row_index": 4,
+    "frame_start": 0,
+    "frame_count": 8,
+    "label": "attentive seated talk/head turn",
+    "tier": "regular",
+    "duration_ms": 180,
+    "loop": true,
+    "sourceRow": {
+      "index": 4,
+      "y0": 384,
+      "y1": 464,
+      "topic": "seated head-turn and talk poses"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 0,
+          "x0": 41,
+          "x1": 91
+        },
+        "path": "assets/office-assistant/animations/prompt_received/attentive_talk/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 1,
+          "x0": 170,
+          "x1": 213
+        },
+        "path": "assets/office-assistant/animations/prompt_received/attentive_talk/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 2,
+          "x0": 293,
+          "x1": 338
+        },
+        "path": "assets/office-assistant/animations/prompt_received/attentive_talk/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 3,
+          "x0": 417,
+          "x1": 461
+        },
+        "path": "assets/office-assistant/animations/prompt_received/attentive_talk/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 4,
+          "x0": 537,
+          "x1": 585
+        },
+        "path": "assets/office-assistant/animations/prompt_received/attentive_talk/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 5,
+          "x0": 653,
+          "x1": 711
+        },
+        "path": "assets/office-assistant/animations/prompt_received/attentive_talk/frame_005.png"
+      },
+      {
+        "index": 6,
+        "sourceBox": {
+          "index": 6,
+          "x0": 776,
+          "x1": 833
+        },
+        "path": "assets/office-assistant/animations/prompt_received/attentive_talk/frame_006.png"
+      },
+      {
+        "index": 7,
+        "sourceBox": {
+          "index": 7,
+          "x0": 900,
+          "x1": 958
+        },
+        "path": "assets/office-assistant/animations/prompt_received/attentive_talk/frame_007.png"
+      }
+    ]
+  },
+  "thinking:paper_think": {
+    "state": "thinking",
+    "animation": "paper_think",
+    "row_index": 16,
+    "frame_start": 2,
+    "frame_count": 6,
+    "label": "paper read/write thinking loop",
+    "tier": "regular",
+    "duration_ms": 190,
+    "loop": true,
+    "sourceRow": {
+      "index": 16,
+      "y0": 1501,
+      "y1": 1580,
+      "topic": "paper reading, writing, presentation gestures"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 2,
+          "x0": 279,
+          "x1": 338
+        },
+        "path": "assets/office-assistant/animations/thinking/paper_think/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 3,
+          "x0": 403,
+          "x1": 462
+        },
+        "path": "assets/office-assistant/animations/thinking/paper_think/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 4,
+          "x0": 527,
+          "x1": 586
+        },
+        "path": "assets/office-assistant/animations/thinking/paper_think/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 5,
+          "x0": 651,
+          "x1": 710
+        },
+        "path": "assets/office-assistant/animations/thinking/paper_think/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 6,
+          "x0": 775,
+          "x1": 834
+        },
+        "path": "assets/office-assistant/animations/thinking/paper_think/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 7,
+          "x0": 899,
+          "x1": 958
+        },
+        "path": "assets/office-assistant/animations/thinking/paper_think/frame_005.png"
+      }
+    ]
+  },
+  "tool_active:desk_work": {
+    "state": "tool_active",
+    "animation": "desk_work",
+    "row_index": 9,
+    "frame_start": 0,
+    "frame_count": 25,
+    "label": "desk work / typing sequence",
+    "tier": "regular",
+    "duration_ms": 120,
+    "loop": true,
+    "sourceRow": {
+      "index": 9,
+      "y0": 842,
+      "y1": 929,
+      "topic": "desk work and typing"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 0,
+          "x0": 6,
+          "x1": 104
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 1,
+          "x0": 130,
+          "x1": 232
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 2,
+          "x0": 250,
+          "x1": 359
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 3,
+          "x0": 374,
+          "x1": 482
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 4,
+          "x0": 497,
+          "x1": 609
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 5,
+          "x0": 621,
+          "x1": 731
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_005.png"
+      },
+      {
+        "index": 6,
+        "sourceBox": {
+          "index": 6,
+          "x0": 745,
+          "x1": 852
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_006.png"
+      },
+      {
+        "index": 7,
+        "sourceBox": {
+          "index": 7,
+          "x0": 869,
+          "x1": 976
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_007.png"
+      },
+      {
+        "index": 8,
+        "sourceBox": {
+          "index": 8,
+          "x0": 993,
+          "x1": 1100
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_008.png"
+      },
+      {
+        "index": 9,
+        "sourceBox": {
+          "index": 9,
+          "x0": 1117,
+          "x1": 1226
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_009.png"
+      },
+      {
+        "index": 10,
+        "sourceBox": {
+          "index": 10,
+          "x0": 1241,
+          "x1": 1353
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_010.png"
+      },
+      {
+        "index": 11,
+        "sourceBox": {
+          "index": 11,
+          "x0": 1365,
+          "x1": 1472
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_011.png"
+      },
+      {
+        "index": 12,
+        "sourceBox": {
+          "index": 12,
+          "x0": 1489,
+          "x1": 1596
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_012.png"
+      },
+      {
+        "index": 13,
+        "sourceBox": {
+          "index": 13,
+          "x0": 1613,
+          "x1": 1720
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_013.png"
+      },
+      {
+        "index": 14,
+        "sourceBox": {
+          "index": 14,
+          "x0": 1737,
+          "x1": 1844
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_014.png"
+      },
+      {
+        "index": 15,
+        "sourceBox": {
+          "index": 15,
+          "x0": 1861,
+          "x1": 1968
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_015.png"
+      },
+      {
+        "index": 16,
+        "sourceBox": {
+          "index": 16,
+          "x0": 1985,
+          "x1": 2092
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_016.png"
+      },
+      {
+        "index": 17,
+        "sourceBox": {
+          "index": 17,
+          "x0": 2109,
+          "x1": 2216
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_017.png"
+      },
+      {
+        "index": 18,
+        "sourceBox": {
+          "index": 18,
+          "x0": 2233,
+          "x1": 2340
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_018.png"
+      },
+      {
+        "index": 19,
+        "sourceBox": {
+          "index": 19,
+          "x0": 2357,
+          "x1": 2464
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_019.png"
+      },
+      {
+        "index": 20,
+        "sourceBox": {
+          "index": 20,
+          "x0": 2481,
+          "x1": 2588
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_020.png"
+      },
+      {
+        "index": 21,
+        "sourceBox": {
+          "index": 21,
+          "x0": 2605,
+          "x1": 2715
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_021.png"
+      },
+      {
+        "index": 22,
+        "sourceBox": {
+          "index": 22,
+          "x0": 2729,
+          "x1": 2842
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_022.png"
+      },
+      {
+        "index": 23,
+        "sourceBox": {
+          "index": 23,
+          "x0": 2853,
+          "x1": 2962
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_023.png"
+      },
+      {
+        "index": 24,
+        "sourceBox": {
+          "index": 24,
+          "x0": 2977,
+          "x1": 3084
+        },
+        "path": "assets/office-assistant/animations/tool_active/desk_work/frame_024.png"
+      }
+    ]
+  },
+  "done:happy_status": {
+    "state": "done",
+    "animation": "happy_status",
+    "row_index": 24,
+    "frame_start": 18,
+    "frame_count": 4,
+    "label": "happy/status reaction",
+    "tier": "regular",
+    "duration_ms": 160,
+    "loop": true,
+    "sourceRow": {
+      "index": 24,
+      "y0": 2239,
+      "y1": 2324,
+      "topic": "run/search, saw-like prop, happy/heart status"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 18,
+          "x0": 2267,
+          "x1": 2323
+        },
+        "path": "assets/office-assistant/animations/done/happy_status/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 19,
+          "x0": 2389,
+          "x1": 2446
+        },
+        "path": "assets/office-assistant/animations/done/happy_status/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 20,
+          "x0": 2506,
+          "x1": 2571
+        },
+        "path": "assets/office-assistant/animations/done/happy_status/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 21,
+          "x0": 2620,
+          "x1": 2694
+        },
+        "path": "assets/office-assistant/animations/done/happy_status/frame_003.png"
+      }
+    ]
+  },
+  "error:cloud_reaction": {
+    "state": "error",
+    "animation": "cloud_reaction",
+    "row_index": 25,
+    "frame_start": 20,
+    "frame_count": 5,
+    "label": "cloud/error reaction",
+    "tier": "regular",
+    "duration_ms": 170,
+    "loop": false,
+    "sourceRow": {
+      "index": 25,
+      "y0": 2333,
+      "y1": 2417,
+      "topic": "badge/book/status symbols and cloud reaction"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 20,
+          "x0": 2518,
+          "x1": 2597
+        },
+        "path": "assets/office-assistant/animations/error/cloud_reaction/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 21,
+          "x0": 2639,
+          "x1": 2721
+        },
+        "path": "assets/office-assistant/animations/error/cloud_reaction/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 22,
+          "x0": 2765,
+          "x1": 2845
+        },
+        "path": "assets/office-assistant/animations/error/cloud_reaction/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 23,
+          "x0": 2889,
+          "x1": 2949
+        },
+        "path": "assets/office-assistant/animations/error/cloud_reaction/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 24,
+          "x0": 3013,
+          "x1": 3092
+        },
+        "path": "assets/office-assistant/animations/error/cloud_reaction/frame_004.png"
+      }
+    ]
+  },
+  "session_start:greeting": {
+    "state": "session_start",
+    "animation": "greeting",
+    "row_index": 0,
+    "frame_start": 0,
+    "frame_count": 7,
+    "label": "happy greeting loop",
+    "tier": "extended",
+    "duration_ms": 160,
+    "loop": true,
+    "sourceRow": {
+      "index": 0,
+      "y0": 15,
+      "y1": 92,
+      "topic": "greeting, happy idle, computer action"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 0,
+          "x0": 35,
+          "x1": 91
+        },
+        "path": "assets/office-assistant/animations/session_start/greeting/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 1,
+          "x0": 164,
+          "x1": 219
+        },
+        "path": "assets/office-assistant/animations/session_start/greeting/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 2,
+          "x0": 289,
+          "x1": 342
+        },
+        "path": "assets/office-assistant/animations/session_start/greeting/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 3,
+          "x0": 413,
+          "x1": 466
+        },
+        "path": "assets/office-assistant/animations/session_start/greeting/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 4,
+          "x0": 537,
+          "x1": 589
+        },
+        "path": "assets/office-assistant/animations/session_start/greeting/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 5,
+          "x0": 655,
+          "x1": 715
+        },
+        "path": "assets/office-assistant/animations/session_start/greeting/frame_005.png"
+      },
+      {
+        "index": 6,
+        "sourceBox": {
+          "index": 6,
+          "x0": 776,
+          "x1": 843
+        },
+        "path": "assets/office-assistant/animations/session_start/greeting/frame_006.png"
+      }
+    ]
+  },
+  "tool_read:clipboard_read": {
+    "state": "tool_read",
+    "animation": "clipboard_read",
+    "row_index": 8,
+    "frame_start": 2,
+    "frame_count": 10,
+    "label": "clipboard/document reading",
+    "tier": "extended",
+    "duration_ms": 150,
+    "loop": true,
+    "sourceRow": {
+      "index": 8,
+      "y0": 753,
+      "y1": 836,
+      "topic": "document and clipboard reading"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 2,
+          "x0": 265,
+          "x1": 338
+        },
+        "path": "assets/office-assistant/animations/tool_read/clipboard_read/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 3,
+          "x0": 376,
+          "x1": 463
+        },
+        "path": "assets/office-assistant/animations/tool_read/clipboard_read/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 4,
+          "x0": 500,
+          "x1": 587
+        },
+        "path": "assets/office-assistant/animations/tool_read/clipboard_read/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 5,
+          "x0": 624,
+          "x1": 711
+        },
+        "path": "assets/office-assistant/animations/tool_read/clipboard_read/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 6,
+          "x0": 748,
+          "x1": 833
+        },
+        "path": "assets/office-assistant/animations/tool_read/clipboard_read/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 7,
+          "x0": 872,
+          "x1": 958
+        },
+        "path": "assets/office-assistant/animations/tool_read/clipboard_read/frame_005.png"
+      },
+      {
+        "index": 6,
+        "sourceBox": {
+          "index": 8,
+          "x0": 996,
+          "x1": 1083
+        },
+        "path": "assets/office-assistant/animations/tool_read/clipboard_read/frame_006.png"
+      },
+      {
+        "index": 7,
+        "sourceBox": {
+          "index": 9,
+          "x0": 1120,
+          "x1": 1207
+        },
+        "path": "assets/office-assistant/animations/tool_read/clipboard_read/frame_007.png"
+      },
+      {
+        "index": 8,
+        "sourceBox": {
+          "index": 10,
+          "x0": 1244,
+          "x1": 1336
+        },
+        "path": "assets/office-assistant/animations/tool_read/clipboard_read/frame_008.png"
+      },
+      {
+        "index": 9,
+        "sourceBox": {
+          "index": 11,
+          "x0": 1368,
+          "x1": 1455
+        },
+        "path": "assets/office-assistant/animations/tool_read/clipboard_read/frame_009.png"
+      }
+    ]
+  },
+  "tool_search:sniff_search": {
+    "state": "tool_search",
+    "animation": "sniff_search",
+    "row_index": 14,
+    "frame_start": 2,
+    "frame_count": 6,
+    "label": "sniff/search movement",
+    "tier": "extended",
+    "duration_ms": 150,
+    "loop": true,
+    "sourceRow": {
+      "index": 14,
+      "y0": 1307,
+      "y1": 1394,
+      "topic": "sleep, sniff/search, run, happy status"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 2,
+          "x0": 300,
+          "x1": 369
+        },
+        "path": "assets/office-assistant/animations/tool_search/sniff_search/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 3,
+          "x0": 414,
+          "x1": 493
+        },
+        "path": "assets/office-assistant/animations/tool_search/sniff_search/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 4,
+          "x0": 533,
+          "x1": 616
+        },
+        "path": "assets/office-assistant/animations/tool_search/sniff_search/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 5,
+          "x0": 647,
+          "x1": 741
+        },
+        "path": "assets/office-assistant/animations/tool_search/sniff_search/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 6,
+          "x0": 766,
+          "x1": 864
+        },
+        "path": "assets/office-assistant/animations/tool_search/sniff_search/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 7,
+          "x0": 875,
+          "x1": 976
+        },
+        "path": "assets/office-assistant/animations/tool_search/sniff_search/frame_005.png"
+      }
+    ]
+  },
+  "tool_explore:crawl_explore": {
+    "state": "tool_explore",
+    "animation": "crawl_explore",
+    "row_index": 32,
+    "frame_start": 18,
+    "frame_count": 10,
+    "label": "crawl/explore movement",
+    "tier": "extended",
+    "duration_ms": 140,
+    "loop": true,
+    "sourceRow": {
+      "index": 32,
+      "y0": 2986,
+      "y1": 3068,
+      "topic": "pointer/pole, walk, crawl transitions"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 18,
+          "x0": 2241,
+          "x1": 2319
+        },
+        "path": "assets/office-assistant/animations/tool_explore/crawl_explore/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 19,
+          "x0": 2363,
+          "x1": 2444
+        },
+        "path": "assets/office-assistant/animations/tool_explore/crawl_explore/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 20,
+          "x0": 2487,
+          "x1": 2568
+        },
+        "path": "assets/office-assistant/animations/tool_explore/crawl_explore/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 21,
+          "x0": 2611,
+          "x1": 2691
+        },
+        "path": "assets/office-assistant/animations/tool_explore/crawl_explore/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 22,
+          "x0": 2735,
+          "x1": 2824
+        },
+        "path": "assets/office-assistant/animations/tool_explore/crawl_explore/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 23,
+          "x0": 2858,
+          "x1": 2938
+        },
+        "path": "assets/office-assistant/animations/tool_explore/crawl_explore/frame_005.png"
+      },
+      {
+        "index": 6,
+        "sourceBox": {
+          "index": 24,
+          "x0": 2980,
+          "x1": 3061
+        },
+        "path": "assets/office-assistant/animations/tool_explore/crawl_explore/frame_006.png"
+      },
+      {
+        "index": 7,
+        "sourceBox": {
+          "index": 25,
+          "x0": 3104,
+          "x1": 3191
+        },
+        "path": "assets/office-assistant/animations/tool_explore/crawl_explore/frame_007.png"
+      },
+      {
+        "index": 8,
+        "sourceBox": {
+          "index": 26,
+          "x0": 3228,
+          "x1": 3309
+        },
+        "path": "assets/office-assistant/animations/tool_explore/crawl_explore/frame_008.png"
+      },
+      {
+        "index": 9,
+        "sourceBox": {
+          "index": 27,
+          "x0": 3352,
+          "x1": 3433
+        },
+        "path": "assets/office-assistant/animations/tool_explore/crawl_explore/frame_009.png"
+      }
+    ]
+  },
+  "tool_web:computer_action": {
+    "state": "tool_web",
+    "animation": "computer_action",
+    "row_index": 22,
+    "frame_start": 9,
+    "frame_count": 6,
+    "label": "computer/electric action",
+    "tier": "extended",
+    "duration_ms": 140,
+    "loop": true,
+    "sourceRow": {
+      "index": 22,
+      "y0": 2058,
+      "y1": 2138,
+      "topic": "computer/electric action sequences"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 9,
+          "x0": 2110,
+          "x1": 2193
+        },
+        "path": "assets/office-assistant/animations/tool_web/computer_action/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 10,
+          "x0": 2334,
+          "x1": 2434
+        },
+        "path": "assets/office-assistant/animations/tool_web/computer_action/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 11,
+          "x0": 2466,
+          "x1": 2558
+        },
+        "path": "assets/office-assistant/animations/tool_web/computer_action/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 12,
+          "x0": 2588,
+          "x1": 2682
+        },
+        "path": "assets/office-assistant/animations/tool_web/computer_action/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 14,
+          "x0": 2730,
+          "x1": 2807
+        },
+        "path": "assets/office-assistant/animations/tool_web/computer_action/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 16,
+          "x0": 2854,
+          "x1": 2931
+        },
+        "path": "assets/office-assistant/animations/tool_web/computer_action/frame_005.png"
+      }
+    ]
+  },
+  "tool_vcs_read:presentation_review": {
+    "state": "tool_vcs_read",
+    "animation": "presentation_review",
+    "row_index": 5,
+    "frame_start": 10,
+    "frame_count": 7,
+    "label": "document/chart review",
+    "tier": "extended",
+    "duration_ms": 170,
+    "loop": true,
+    "sourceRow": {
+      "index": 5,
+      "y0": 474,
+      "y1": 557,
+      "topic": "documents, charts, cards, presentation props"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 10,
+          "x0": 1260,
+          "x1": 1329
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_read/presentation_review/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 11,
+          "x0": 1386,
+          "x1": 1467
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_read/presentation_review/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 12,
+          "x0": 1510,
+          "x1": 1579
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_read/presentation_review/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 13,
+          "x0": 1626,
+          "x1": 1720
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_read/presentation_review/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 14,
+          "x0": 1767,
+          "x1": 1824
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_read/presentation_review/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 15,
+          "x0": 1872,
+          "x1": 1966
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_read/presentation_review/frame_005.png"
+      },
+      {
+        "index": 6,
+        "sourceBox": {
+          "index": 16,
+          "x0": 2016,
+          "x1": 2075
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_read/presentation_review/frame_006.png"
+      }
+    ]
+  },
+  "tool_vcs_write:desk_typing": {
+    "state": "tool_vcs_write",
+    "animation": "desk_typing",
+    "row_index": 9,
+    "frame_start": 5,
+    "frame_count": 12,
+    "label": "focused desk typing subset",
+    "tier": "extended",
+    "duration_ms": 120,
+    "loop": true,
+    "sourceRow": {
+      "index": 9,
+      "y0": 842,
+      "y1": 929,
+      "topic": "desk work and typing"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 5,
+          "x0": 621,
+          "x1": 731
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 6,
+          "x0": 745,
+          "x1": 852
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 7,
+          "x0": 869,
+          "x1": 976
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 8,
+          "x0": 993,
+          "x1": 1100
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 9,
+          "x0": 1117,
+          "x1": 1226
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 10,
+          "x0": 1241,
+          "x1": 1353
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_005.png"
+      },
+      {
+        "index": 6,
+        "sourceBox": {
+          "index": 11,
+          "x0": 1365,
+          "x1": 1472
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_006.png"
+      },
+      {
+        "index": 7,
+        "sourceBox": {
+          "index": 12,
+          "x0": 1489,
+          "x1": 1596
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_007.png"
+      },
+      {
+        "index": 8,
+        "sourceBox": {
+          "index": 13,
+          "x0": 1613,
+          "x1": 1720
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_008.png"
+      },
+      {
+        "index": 9,
+        "sourceBox": {
+          "index": 14,
+          "x0": 1737,
+          "x1": 1844
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_009.png"
+      },
+      {
+        "index": 10,
+        "sourceBox": {
+          "index": 15,
+          "x0": 1861,
+          "x1": 1968
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_010.png"
+      },
+      {
+        "index": 11,
+        "sourceBox": {
+          "index": 16,
+          "x0": 1985,
+          "x1": 2092
+        },
+        "path": "assets/office-assistant/animations/tool_vcs_write/desk_typing/frame_011.png"
+      }
+    ]
+  },
+  "tool_test:inspect_react": {
+    "state": "tool_test",
+    "animation": "inspect_react",
+    "row_index": 17,
+    "frame_start": 8,
+    "frame_count": 7,
+    "label": "inspect/reaction loop",
+    "tier": "extended",
+    "duration_ms": 160,
+    "loop": true,
+    "sourceRow": {
+      "index": 17,
+      "y0": 1584,
+      "y1": 1673,
+      "topic": "talk, reaction, sleep/error-like poses"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 8,
+          "x0": 1030,
+          "x1": 1109
+        },
+        "path": "assets/office-assistant/animations/tool_test/inspect_react/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 9,
+          "x0": 1134,
+          "x1": 1206
+        },
+        "path": "assets/office-assistant/animations/tool_test/inspect_react/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 10,
+          "x0": 1249,
+          "x1": 1330
+        },
+        "path": "assets/office-assistant/animations/tool_test/inspect_react/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 11,
+          "x0": 1373,
+          "x1": 1454
+        },
+        "path": "assets/office-assistant/animations/tool_test/inspect_react/frame_003.png"
+      },
+      {
+        "index": 4,
+        "sourceBox": {
+          "index": 12,
+          "x0": 1502,
+          "x1": 1578
+        },
+        "path": "assets/office-assistant/animations/tool_test/inspect_react/frame_004.png"
+      },
+      {
+        "index": 5,
+        "sourceBox": {
+          "index": 13,
+          "x0": 1631,
+          "x1": 1701
+        },
+        "path": "assets/office-assistant/animations/tool_test/inspect_react/frame_005.png"
+      },
+      {
+        "index": 6,
+        "sourceBox": {
+          "index": 14,
+          "x0": 1761,
+          "x1": 1826
+        },
+        "path": "assets/office-assistant/animations/tool_test/inspect_react/frame_006.png"
+      }
+    ]
+  },
+  "tool_build:tool_prop": {
+    "state": "tool_build",
+    "animation": "tool_prop",
+    "row_index": 1,
+    "frame_start": 2,
+    "frame_count": 4,
+    "label": "tool/prop action",
+    "tier": "extended",
+    "duration_ms": 150,
+    "loop": true,
+    "sourceRow": {
+      "index": 1,
+      "y0": 103,
+      "y1": 185,
+      "topic": "tool props, pointing, construction-like actions"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "sourceBox": {
+          "index": 2,
+          "x0": 274,
+          "x1": 371
+        },
+        "path": "assets/office-assistant/animations/tool_build/tool_prop/frame_000.png"
+      },
+      {
+        "index": 1,
+        "sourceBox": {
+          "index": 3,
+          "x0": 398,
+          "x1": 495
+        },
+        "path": "assets/office-assistant/animations/tool_build/tool_prop/frame_001.png"
+      },
+      {
+        "index": 2,
+        "sourceBox": {
+          "index": 4,
+          "x0": 522,
+          "x1": 619
+        },
+        "path": "assets/office-assistant/animations/tool_build/tool_prop/frame_002.png"
+      },
+      {
+        "index": 3,
+        "sourceBox": {
+          "index": 5,
+          "x0": 648,
+          "x1": 741
+        },
+        "path": "assets/office-assistant/animations/tool_build/tool_prop/frame_003.png"
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "hooklusion",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.29.3",
+  "scripts": {
+    "dev": "concurrently -k -n app,server \"pnpm --filter @hooklusion/app dev\" \"pnpm --filter @hooklusion/server dev\"",
+    "build": "pnpm --filter @hooklusion/server build && pnpm --filter @hooklusion/app build && pnpm --filter @hooklusion/cli build",
+    "dist:mac": "pnpm --filter @hooklusion/app dist:mac",
+    "analytics:generate": "pnpm --filter @hooklusion/server exec tsx ../../scripts/analytics.ts generate",
+    "test": "pnpm --filter @hooklusion/server test && pnpm --filter @hooklusion/app test && pnpm --filter @hooklusion/cli test",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs,ts,mts,cts,json,md}": [
+      "biome check --write --no-errors-on-unmatched"
+    ]
+  },
+  "devDependencies": {
+    "@biomejs/biome": "latest",
+    "concurrently": "latest",
+    "husky": "latest",
+    "lint-staged": "latest"
+  }
+}

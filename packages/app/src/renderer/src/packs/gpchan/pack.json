@@ -1,0 +1,53 @@
+{
+  "name": "gpchan Slow A/B Test Pack",
+  "states": {
+    "idle": {
+      "frames": ["sprites/gpchan/idle.png"],
+      "durationsMs": [3000],
+      "loop": true,
+      "transitionMs": 120
+    },
+    "session_start": {
+      "frames": [
+        "sprites/gpchan/session_start_a.png",
+        "sprites/gpchan/session_start_b.png"
+      ],
+      "durationsMs": [1500, 1500],
+      "loop": true,
+      "transitionMs": 180
+    },
+    "prompt_received": {
+      "frames": [
+        "sprites/gpchan/prompt_received_a.png",
+        "sprites/gpchan/prompt_received_b.png"
+      ],
+      "durationsMs": [1500, 1500],
+      "loop": true,
+      "transitionMs": 150
+    },
+    "thinking": {
+      "frames": [
+        "sprites/gpchan/thinking_a.png",
+        "sprites/gpchan/thinking_b.png"
+      ],
+      "durationsMs": [1500, 1500],
+      "loop": true,
+      "transitionMs": 120
+    },
+    "tool_active": {
+      "frames": [
+        "sprites/gpchan/tool_active_a.png",
+        "sprites/gpchan/tool_active_b.png"
+      ],
+      "durationsMs": [1500, 1500],
+      "loop": true,
+      "transitionMs": 100
+    },
+    "done": {
+      "frames": ["sprites/gpchan/done_a.png", "sprites/gpchan/done_b.png"],
+      "durationsMs": [1500, 1500],
+      "loop": true,
+      "transitionMs": 180
+    }
+  }
+}

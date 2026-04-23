@@ -1,0 +1,74 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+out/
+packages/server/dist/
+packages/app/out/
+*.app
+*.dmg
+*.exe
+
+# Logs
+logs/
+*.log
+hooklusion-analytics-report-*.html
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Cache
+.cache/
+.parcel-cache/
+.turbo/
+.next/
+__pycache__/
+*.py[cod]
+
+# Local state
+*.local
+.claude/
+.claude/settings.local.json
+.codex/
+.project-c/
+packages/app/.hooklusion/
+HANDOFF.md
+
+# Local assets
+sources/
+!sources/
+!sources/gpchan/
+!sources/gpchan/**
+assets/*
+!assets/gpchan-default/
+!assets/gpchan-default/**
+!assets/office-assistant/
+!assets/office-assistant/**
+!assets/sheets/
+!assets/sheets/gpchan/
+!assets/sheets/gpchan/**
+packages/app/resources/sprites/
+.worktrees/

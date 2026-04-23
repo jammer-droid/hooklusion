@@ -1,0 +1,29 @@
+appId: com.hooklusion.app
+productName: Hooklusion
+
+directories:
+  output: dist
+  buildResources: resources
+
+files:
+  - out/**
+  - package.json
+
+extraResources:
+  - from: resources/hooklusion.png
+    to: hooklusion.png
+  - from: .hooklusion/profiles/gpchan-default
+    to: bundled-profiles/gpchan-default
+  - from: ../../assets/office-assistant
+    to: bundled-assets/office-assistant
+
+mac:
+  target:
+    - dmg
+    - zip
+  category: public.app-category.developer-tools
+  icon: resources/hooklusion.png
+  identity: "-"
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  artifactName: ${productName}-${version}-${arch}.${ext}

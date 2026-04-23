@@ -1,0 +1,993 @@
+{
+  "00_session_start.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/00_session_start/frame_01.png",
+      "source_bbox": [
+        83,
+        30,
+        705,
+        701
+      ],
+      "size": [
+        622,
+        671
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/00_session_start/frame_02.png",
+      "source_bbox": [
+        778,
+        30,
+        1461,
+        685
+      ],
+      "size": [
+        683,
+        655
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/00_session_start/frame_03.png",
+      "source_bbox": [
+        1465,
+        33,
+        2072,
+        685
+      ],
+      "size": [
+        607,
+        652
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "01_prompt_received.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/01_prompt_received/frame_01.png",
+      "source_bbox": [
+        163,
+        36,
+        812,
+        865
+      ],
+      "size": [
+        649,
+        829
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/01_prompt_received/frame_02.png",
+      "source_bbox": [
+        989,
+        37,
+        1634,
+        865
+      ],
+      "size": [
+        645,
+        828
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "02_thinking.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/02_thinking/frame_01.png",
+      "source_bbox": [
+        166,
+        42,
+        847,
+        814
+      ],
+      "size": [
+        681,
+        772
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/02_thinking/frame_02.png",
+      "source_bbox": [
+        925,
+        42,
+        1639,
+        814
+      ],
+      "size": [
+        714,
+        772
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "03_tool_active.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/03_tool_active/frame_01.png",
+      "source_bbox": [
+        130,
+        43,
+        1099,
+        1176
+      ],
+      "size": [
+        969,
+        1133
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "04_done.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/04_done/frame_01.png",
+      "source_bbox": [
+        150,
+        28,
+        873,
+        835
+      ],
+      "size": [
+        723,
+        807
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/04_done/frame_02.png",
+      "source_bbox": [
+        912,
+        26,
+        1633,
+        835
+      ],
+      "size": [
+        721,
+        809
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "05_tool-read.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/05_tool-read/frame_01.png",
+      "source_bbox": [
+        100,
+        15,
+        858,
+        871
+      ],
+      "size": [
+        758,
+        856
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/05_tool-read/frame_02.png",
+      "source_bbox": [
+        917,
+        17,
+        1669,
+        871
+      ],
+      "size": [
+        752,
+        854
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "06_tool-search.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/06_tool-search/frame_01.png",
+      "source_bbox": [
+        67,
+        52,
+        865,
+        843
+      ],
+      "size": [
+        798,
+        791
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/06_tool-search/frame_02.png",
+      "source_bbox": [
+        932,
+        56,
+        1704,
+        845
+      ],
+      "size": [
+        772,
+        789
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "07_tool-web.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/07_tool-web/frame_01.png",
+      "source_bbox": [
+        21,
+        31,
+        857,
+        847
+      ],
+      "size": [
+        836,
+        816
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/07_tool-web/frame_02.png",
+      "source_bbox": [
+        879,
+        34,
+        1687,
+        848
+      ],
+      "size": [
+        808,
+        814
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "08_tool-explore.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/08_tool-explore/frame_01.png",
+      "source_bbox": [
+        8,
+        59,
+        846,
+        815
+      ],
+      "size": [
+        838,
+        756
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/08_tool-explore/frame_02.png",
+      "source_bbox": [
+        873,
+        59,
+        1751,
+        815
+      ],
+      "size": [
+        878,
+        756
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "09_tool-vcs_read.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/09_tool-vcs_read/frame_01.png",
+      "source_bbox": [
+        53,
+        52,
+        843,
+        834
+      ],
+      "size": [
+        790,
+        782
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/09_tool-vcs_read/frame_02.png",
+      "source_bbox": [
+        919,
+        55,
+        1707,
+        835
+      ],
+      "size": [
+        788,
+        780
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "10_tool-vcs_write.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/10_tool-vcs_write/frame_01.png",
+      "source_bbox": [
+        94,
+        45,
+        828,
+        823
+      ],
+      "size": [
+        734,
+        778
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/10_tool-vcs_write/frame_02.png",
+      "source_bbox": [
+        902,
+        55,
+        1680,
+        823
+      ],
+      "size": [
+        778,
+        768
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "11_tool-test.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/11_tool-test/frame_01.png",
+      "source_bbox": [
+        39,
+        4,
+        877,
+        868
+      ],
+      "size": [
+        838,
+        864
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/11_tool-test/frame_02.png",
+      "source_bbox": [
+        930,
+        4,
+        1738,
+        868
+      ],
+      "size": [
+        808,
+        864
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "12_tool-build.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/12_tool-build/frame_01.png",
+      "source_bbox": [
+        23,
+        30,
+        842,
+        853
+      ],
+      "size": [
+        819,
+        823
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/12_tool-build/frame_02.png",
+      "source_bbox": [
+        946,
+        33,
+        1719,
+        853
+      ],
+      "size": [
+        773,
+        820
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "idle.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/idle/frame_01.png",
+      "source_bbox": [
+        237,
+        79,
+        1174,
+        1121
+      ],
+      "size": [
+        937,
+        1042
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20
+    }
+  ],
+  "13_ir-hoverin.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/13_ir-hoverin/frame_01.png",
+      "source_bbox": [
+        120,
+        41,
+        821,
+        813
+      ],
+      "size": [
+        701,
+        772
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 1,
+      "strip_frame_count": 2
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/13_ir-hoverin/frame_02.png",
+      "source_bbox": [
+        953,
+        39,
+        1657,
+        813
+      ],
+      "size": [
+        704,
+        774
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 2,
+      "strip_frame_count": 2
+    }
+  ],
+  "14_ir-hoverout.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/14_ir-hoverout/frame_01.png",
+      "source_bbox": [
+        117,
+        23,
+        824,
+        804
+      ],
+      "size": [
+        707,
+        781
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 1,
+      "strip_frame_count": 2
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/14_ir-hoverout/frame_02.png",
+      "source_bbox": [
+        1004,
+        23,
+        1712,
+        804
+      ],
+      "size": [
+        708,
+        781
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 2,
+      "strip_frame_count": 2
+    }
+  ],
+  "15_ir-click.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/15_ir-click/frame_01.png",
+      "source_bbox": [
+        136,
+        46,
+        841,
+        828
+      ],
+      "size": [
+        705,
+        782
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 1,
+      "strip_frame_count": 2
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/15_ir-click/frame_02.png",
+      "source_bbox": [
+        905,
+        47,
+        1659,
+        829
+      ],
+      "size": [
+        754,
+        782
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 2,
+      "strip_frame_count": 2
+    }
+  ],
+  "drag_left.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_left/frame_01.png",
+      "source_bbox": [
+        46,
+        62,
+        554,
+        640
+      ],
+      "size": [
+        508,
+        578
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 1,
+      "strip_frame_count": 3,
+      "strip_boundaries": [
+        0,
+        554,
+        1091,
+        1607,
+        2172
+      ]
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_left/frame_02.png",
+      "source_bbox": [
+        567,
+        83,
+        1041,
+        640
+      ],
+      "size": [
+        474,
+        557
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 2,
+      "strip_frame_count": 3,
+      "strip_boundaries": [
+        0,
+        554,
+        1091,
+        1607,
+        2172
+      ]
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_left/frame_03.png",
+      "source_bbox": [
+        1091,
+        63,
+        1607,
+        661
+      ],
+      "size": [
+        516,
+        598
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 3,
+      "strip_frame_count": 3,
+      "strip_boundaries": [
+        0,
+        554,
+        1091,
+        1607,
+        2172
+      ]
+    }
+  ],
+  "drag_right.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_right/frame_01.png",
+      "source_bbox": [
+        21,
+        98,
+        511,
+        649
+      ],
+      "size": [
+        490,
+        551
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 1,
+      "strip_frame_count": 3,
+      "strip_boundaries": [
+        0,
+        511,
+        1056,
+        1609,
+        2172
+      ]
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_right/frame_02.png",
+      "source_bbox": [
+        576,
+        93,
+        1056,
+        647
+      ],
+      "size": [
+        480,
+        554
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 2,
+      "strip_frame_count": 3,
+      "strip_boundaries": [
+        0,
+        511,
+        1056,
+        1609,
+        2172
+      ]
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_right/frame_03.png",
+      "source_bbox": [
+        1086,
+        79,
+        1609,
+        647
+      ],
+      "size": [
+        523,
+        568
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 3,
+      "strip_frame_count": 3,
+      "strip_boundaries": [
+        0,
+        511,
+        1056,
+        1609,
+        2172
+      ]
+    }
+  ],
+  "drag_up.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_up/frame_01.png",
+      "source_bbox": [
+        25,
+        87,
+        542,
+        657
+      ],
+      "size": [
+        517,
+        570
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 1,
+      "strip_frame_count": 3
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_up/frame_02.png",
+      "source_bbox": [
+        552,
+        73,
+        1036,
+        634
+      ],
+      "size": [
+        484,
+        561
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 2,
+      "strip_frame_count": 3
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_up/frame_03.png",
+      "source_bbox": [
+        1086,
+        52,
+        1580,
+        634
+      ],
+      "size": [
+        494,
+        582
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 3,
+      "strip_frame_count": 3
+    }
+  ],
+  "drag_down.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_down/frame_01.png",
+      "source_bbox": [
+        34,
+        146,
+        543,
+        658
+      ],
+      "size": [
+        509,
+        512
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 1,
+      "strip_frame_count": 3
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_down/frame_02.png",
+      "source_bbox": [
+        586,
+        185,
+        1077,
+        659
+      ],
+      "size": [
+        491,
+        474
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 2,
+      "strip_frame_count": 3
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/drag_down/frame_03.png",
+      "source_bbox": [
+        1093,
+        218,
+        1627,
+        659
+      ],
+      "size": [
+        534,
+        441
+      ],
+      "raw_crop": true,
+      "bbox_padding": 20,
+      "strip_frame_index": 3,
+      "strip_frame_count": 3
+    }
+  ],
+  "transition.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/transition_out/frame_01.png",
+      "source_bbox": [
+        1254,
+        0,
+        1881,
+        627
+      ],
+      "size": [
+        627,
+        627
+      ],
+      "raw_crop": true,
+      "bbox_padding": 0,
+      "strip_frame_index": 1,
+      "strip_frame_count": 4,
+      "source_frame_index": 3,
+      "frame_order": [
+        3,
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/transition_out/frame_02.png",
+      "source_bbox": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "size": [
+        627,
+        627
+      ],
+      "raw_crop": true,
+      "bbox_padding": 0,
+      "strip_frame_index": 2,
+      "strip_frame_count": 4,
+      "source_frame_index": 2,
+      "frame_order": [
+        3,
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/transition_out/frame_03.png",
+      "source_bbox": [
+        1881,
+        0,
+        2508,
+        627
+      ],
+      "size": [
+        627,
+        627
+      ],
+      "raw_crop": true,
+      "bbox_padding": 0,
+      "strip_frame_index": 3,
+      "strip_frame_count": 4,
+      "source_frame_index": 4,
+      "frame_order": [
+        3,
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/transition_out/frame_04.png",
+      "source_bbox": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "size": [
+        627,
+        627
+      ],
+      "raw_crop": true,
+      "bbox_padding": 0,
+      "strip_frame_index": 4,
+      "strip_frame_count": 4,
+      "source_frame_index": 1,
+      "frame_order": [
+        3,
+        2,
+        4,
+        1
+      ]
+    }
+  ],
+  "transition_in.png": [
+    {
+      "file": "assets/sheets/gpchan/split_frames/transition_in/frame_01.png",
+      "source_bbox": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "size": [
+        627,
+        627
+      ],
+      "raw_crop": true,
+      "bbox_padding": 0,
+      "strip_frame_index": 1,
+      "strip_frame_count": 4,
+      "source_frame_index": 1,
+      "frame_order": [
+        1,
+        4,
+        2,
+        3
+      ]
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/transition_in/frame_02.png",
+      "source_bbox": [
+        1881,
+        0,
+        2508,
+        627
+      ],
+      "size": [
+        627,
+        627
+      ],
+      "raw_crop": true,
+      "bbox_padding": 0,
+      "strip_frame_index": 2,
+      "strip_frame_count": 4,
+      "source_frame_index": 4,
+      "frame_order": [
+        1,
+        4,
+        2,
+        3
+      ]
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/transition_in/frame_03.png",
+      "source_bbox": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "size": [
+        627,
+        627
+      ],
+      "raw_crop": true,
+      "bbox_padding": 0,
+      "strip_frame_index": 3,
+      "strip_frame_count": 4,
+      "source_frame_index": 2,
+      "frame_order": [
+        1,
+        4,
+        2,
+        3
+      ]
+    },
+    {
+      "file": "assets/sheets/gpchan/split_frames/transition_in/frame_04.png",
+      "source_bbox": [
+        1254,
+        0,
+        1881,
+        627
+      ],
+      "size": [
+        627,
+        627
+      ],
+      "raw_crop": true,
+      "bbox_padding": 0,
+      "strip_frame_index": 4,
+      "strip_frame_count": 4,
+      "source_frame_index": 3,
+      "frame_order": [
+        1,
+        4,
+        2,
+        3
+      ]
+    }
+  ]
+}

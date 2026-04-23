@@ -1,0 +1,56 @@
+{
+  "name": "Default Pack",
+  "states": {
+    "idle": {
+      "frames": [
+        "sprites/thinking/frame-01.svg",
+        "sprites/thinking/frame-02.svg"
+      ],
+      "durationsMs": [180, 180],
+      "loop": true,
+      "transitionMs": 120
+    },
+    "session_start": {
+      "frames": [
+        "sprites/session_start/frame-01.svg",
+        "sprites/session_start/frame-02.svg"
+      ],
+      "durationsMs": [160, 180],
+      "loop": false,
+      "transitionMs": 180
+    },
+    "prompt_received": {
+      "frames": [
+        "sprites/prompt_received/frame-01.svg",
+        "sprites/prompt_received/frame-02.svg"
+      ],
+      "durationsMs": [140, 180],
+      "loop": false,
+      "transitionMs": 150
+    },
+    "thinking": {
+      "frames": [
+        "sprites/thinking/frame-01.svg",
+        "sprites/thinking/frame-02.svg"
+      ],
+      "durationsMs": [180, 180],
+      "loop": true,
+      "transitionMs": 120
+    },
+    "tool_active": {
+      "frames": [
+        "sprites/tool_active/frame-01.svg",
+        "sprites/tool_active/frame-02.svg"
+      ],
+      "durationsMs": [120, 120],
+      "loop": true,
+      "transitionMs": 100
+    },
+    "done": {
+      "frames": ["sprites/done/frame-01.svg", "sprites/done/frame-02.svg"],
+      "durationsMs": [120, 180],
+      "loop": false,
+      "transitionMs": 180
+    }
+  }
+}

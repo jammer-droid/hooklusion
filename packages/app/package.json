@@ -1,0 +1,22 @@
+{
+  "name": "@hooklusion/app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "dist:mac": "electron-vite build && electron-builder --mac dmg zip --config electron-builder.yml && node ./scripts/sync-mac-app-output.mjs",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "electron": "latest",
+    "electron-builder": "latest",
+    "electron-vite": "latest",
+    "typescript": "latest",
+    "vite": "^7.3.2",
+    "vitest": "latest"
+  }
+}

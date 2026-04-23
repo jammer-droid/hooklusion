@@ -1,0 +1,26 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/out",
+      "!**/node_modules",
+      "!.worktrees",
+      "!.project-c",
+      "!**/.project-c",
+      "!docs/design/claude-design",
+      "!assets"
+    ]
+  }
+}
