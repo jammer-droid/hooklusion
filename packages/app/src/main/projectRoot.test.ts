@@ -8,6 +8,7 @@ import {
   resolveBundledAssetDirectoryForRuntime,
   resolveBundledAssetRoot,
   resolveBundledProfileAssetDirectory,
+  resolveBundledProfileSeedDirectoryForRuntime,
   resolveProjectRoot,
 } from "./projectRoot.js";
 
@@ -69,6 +70,46 @@ describe("resolveProjectRoot", () => {
       }),
     ).toBe(
       "/Applications/hooklusion.app/Contents/Resources/bundled-assets/gpchan-default",
+    );
+  });
+
+  it("resolves development bundled profile seed directories from tracked app resources", async () => {
+    const root = await mkdtemp(join(tmpdir(), "hooklusion-seed-root-"));
+    await writeFile(
+      join(root, "pnpm-workspace.yaml"),
+      "packages:\n  - packages/*\n",
+    );
+
+    expect(
+      resolveBundledProfileSeedDirectoryForRuntime({
+        projectRoot: join(root, "packages", "app"),
+        profileId: "gpchan-default",
+        isPackaged: false,
+      }),
+    ).toBe(
+      join(
+        root,
+        "packages",
+        "app",
+        "resources",
+        "bundled-profiles",
+        "gpchan-default",
+      ),
+    );
+  });
+
+  it("resolves packaged bundled profile seed directories from app resources", () => {
+    const resourcesPath = "/Applications/hooklusion.app/Contents/Resources";
+
+    expect(
+      resolveBundledProfileSeedDirectoryForRuntime({
+        projectRoot: "/ignored/in/packaged/mode",
+        profileId: "gpchan-default",
+        isPackaged: true,
+        resourcesPath,
+      }),
+    ).toBe(
+      "/Applications/hooklusion.app/Contents/Resources/bundled-profiles/gpchan-default",
     );
   });
 });

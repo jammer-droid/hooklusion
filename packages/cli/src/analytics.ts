@@ -1,9 +1,8 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, extname, join } from "node:path";
+import type { SQLOutputValue } from "node:sqlite";
 import { DatabaseSync } from "node:sqlite";
-import type { LoggedEventRecord } from "../../app/src/main/liveEventBridge.js";
-import type { CharacterEvent } from "../../server/src/characterEvent.js";
 
 export type AnalyticsRetentionPolicy = "1d" | "7d" | "30d" | "unlimited";
 export type AnalyticsProvider = "claude" | "codex";
@@ -41,6 +40,63 @@ export interface RecordRawEventInput {
   record: LoggedEventRecord;
   isDisplayedSession: boolean;
 }
+
+interface LoggedEventRecord {
+  receivedAt: string;
+  provider: AnalyticsProvider;
+  payload: unknown;
+}
+
+type CharacterState =
+  | "idle"
+  | "session_start"
+  | "prompt_received"
+  | "tool_active"
+  | "thinking"
+  | "done";
+
+interface CharacterEventBase {
+  provider: AnalyticsProvider;
+  sessionId: string;
+  turnId: string | null;
+  canonicalStateHint: CharacterState;
+  providerState: string | null;
+  raw: unknown;
+}
+
+interface CharacterSessionStartEvent extends CharacterEventBase {
+  event: "SessionStart";
+  providerState: null;
+}
+
+interface CharacterUserPromptSubmitEvent extends CharacterEventBase {
+  event: "UserPromptSubmit";
+  providerState: null;
+}
+
+interface CharacterPreToolUseEvent extends CharacterEventBase {
+  event: "PreToolUse";
+  toolName: string;
+}
+
+interface CharacterPostToolUseEvent extends CharacterEventBase {
+  event: "PostToolUse";
+  toolName: string;
+  ok: boolean;
+}
+
+interface CharacterStopEvent extends CharacterEventBase {
+  event: "Stop";
+  providerState: null;
+  ok: boolean;
+}
+
+type CharacterEvent =
+  | CharacterSessionStartEvent
+  | CharacterUserPromptSubmitEvent
+  | CharacterPreToolUseEvent
+  | CharacterPostToolUseEvent
+  | CharacterStopEvent;
 
 export interface RecordClassifiedEventInput extends ClassifiedBehaviorRecord {
   rawEventId: number;
@@ -143,6 +199,14 @@ interface RawEventExplorerRow {
   event_type: string;
   payload_json: string;
 }
+
+interface BehaviorMixRow {
+  provider: AnalyticsProvider;
+  behavior_kind: string;
+  total_count: number;
+}
+
+type SqlRow = Record<string, SQLOutputValue>;
 
 export function defaultAnalyticsDatabasePath(
   homeDirectory: string = homedir(),
@@ -715,7 +779,8 @@ export function generateAnalyticsReport(
      GROUP BY raw.provider
      ORDER BY raw.provider`,
     )
-    .all(filter.rawParameters);
+    .all(filter.rawParameters)
+    .map(mapProviderSummaryRow);
   const behaviorMix = database
     .prepare(
       `SELECT
@@ -727,7 +792,8 @@ export function generateAnalyticsReport(
      GROUP BY classified.provider, classified.behavior_kind
      ORDER BY classified.provider, total_count DESC`,
     )
-    .all(filter.classifiedParameters);
+    .all(filter.classifiedParameters)
+    .map(mapBehaviorMixRow);
   const eventCatalog = database
     .prepare(
       `SELECT
@@ -743,7 +809,8 @@ export function generateAnalyticsReport(
      GROUP BY raw.provider, raw.event_type
      ORDER BY total_count DESC, raw.provider, raw.event_type`,
     )
-    .all(filter.rawParameters);
+    .all(filter.rawParameters)
+    .map(mapEventCatalogRow);
   const mismatchBuckets = database
     .prepare(
       `SELECT
@@ -754,7 +821,8 @@ export function generateAnalyticsReport(
      GROUP BY resolution.reason
      ORDER BY total_count DESC`,
     )
-    .all(filter.resolutionParameters);
+    .all(filter.resolutionParameters)
+    .map(mapMismatchBucketRow);
   const topOffenders = database
     .prepare(
       `SELECT
@@ -773,7 +841,8 @@ export function generateAnalyticsReport(
      ORDER BY total_count DESC
      LIMIT 15`,
     )
-    .all(filter.resolutionParameters);
+    .all(filter.resolutionParameters)
+    .map(mapTopOffenderRow);
   const sessionSummary = database
     .prepare(
       `SELECT
@@ -788,7 +857,8 @@ export function generateAnalyticsReport(
      ORDER BY mismatch_count DESC, expected_count DESC
      LIMIT 20`,
     )
-    .all(filter.resolutionParameters);
+    .all(filter.resolutionParameters)
+    .map(mapSessionSummaryRow);
   const rawEventRows = database
     .prepare(
       `SELECT
@@ -803,7 +873,8 @@ export function generateAnalyticsReport(
      ORDER BY raw.recorded_at_ms DESC
      LIMIT 50`,
     )
-    .all(filter.rawParameters);
+    .all(filter.rawParameters)
+    .map(mapRawEventExplorerRow);
 
   const html = renderAnalyticsHtml({
     generatedAt,
@@ -827,28 +898,37 @@ function readOverview(
   filter: ReturnType<typeof buildFilterClause>,
   generatedAt: Date,
 ) {
-  const totalEvents = database
-    .prepare(
-      `SELECT COUNT(*) AS total_count FROM raw_events raw ${filter.rawWhereSql}`,
-    )
-    .get(filter.rawParameters).total_count;
-  const classifiedEvents = database
-    .prepare(
-      `SELECT COUNT(*) AS total_count FROM classified_events classified ${filter.classifiedWhereSql}`,
-    )
-    .get(filter.classifiedParameters).total_count;
-  const resolutionSummary = database
-    .prepare(
-      `SELECT
-       SUM(CASE WHEN resolution.expected_behavior IS NOT NULL THEN 1 ELSE 0 END) AS expected_count,
-       SUM(CASE WHEN resolution.reason = 'matched_behavior' THEN 1 ELSE 0 END) AS matched_count,
-       SUM(CASE WHEN resolution.reason = 'true_mismatch' THEN 1 ELSE 0 END) AS true_mismatch_count,
-       SUM(CASE WHEN resolution.reason = 'unexpected_idle' THEN 1 ELSE 0 END) AS unexpected_idle_count,
-       SUM(CASE WHEN resolution.reason = 'fallback_state' THEN 1 ELSE 0 END) AS fallback_count
-     FROM presentation_resolutions resolution
-     ${filter.resolutionWhereSql}`,
-    )
-    .get(filter.resolutionParameters);
+  const totalEvents =
+    readSqlNumber(
+      database
+        .prepare(
+          `SELECT COUNT(*) AS total_count FROM raw_events raw ${filter.rawWhereSql}`,
+        )
+        .get(filter.rawParameters)?.total_count,
+    ) ?? 0;
+  const classifiedEvents =
+    readSqlNumber(
+      database
+        .prepare(
+          `SELECT COUNT(*) AS total_count FROM classified_events classified ${filter.classifiedWhereSql}`,
+        )
+        .get(filter.classifiedParameters)?.total_count,
+    ) ?? 0;
+  const resolutionSummary =
+    asSqlRow(
+      database
+        .prepare(
+          `SELECT
+           SUM(CASE WHEN resolution.expected_behavior IS NOT NULL THEN 1 ELSE 0 END) AS expected_count,
+           SUM(CASE WHEN resolution.reason = 'matched_behavior' THEN 1 ELSE 0 END) AS matched_count,
+           SUM(CASE WHEN resolution.reason = 'true_mismatch' THEN 1 ELSE 0 END) AS true_mismatch_count,
+           SUM(CASE WHEN resolution.reason = 'unexpected_idle' THEN 1 ELSE 0 END) AS unexpected_idle_count,
+           SUM(CASE WHEN resolution.reason = 'fallback_state' THEN 1 ELSE 0 END) AS fallback_count
+         FROM presentation_resolutions resolution
+         ${filter.resolutionWhereSql}`,
+        )
+        .get(filter.resolutionParameters),
+    ) ?? {};
   const latencyValues = database
     .prepare(
       `SELECT resolution.behavior_to_presentation_latency_ms AS behavior_to_presentation_latency_ms
@@ -859,7 +939,9 @@ function readOverview(
      )}
      ORDER BY resolution.behavior_to_presentation_latency_ms ASC`,
     )
-    .all(filter.resolutionParameters);
+    .all(filter.resolutionParameters)
+    .map((row) => readSqlNumber(row.behavior_to_presentation_latency_ms))
+    .filter(isDefinedNumber);
   const openIdleDurations = database
     .prepare(
       `SELECT
@@ -874,14 +956,16 @@ function readOverview(
     .all({
       ...filter.presentationParameters,
       reportGeneratedAtMs: generatedAt.getTime(),
-    });
+    })
+    .map((row) => readSqlNumber(row.effective_duration_ms))
+    .filter(isDefinedNumber);
 
-  const expectedCount = resolutionSummary.expected_count ?? 0;
-  const matchedCount = resolutionSummary.matched_count ?? 0;
+  const expectedCount = readSqlNumber(resolutionSummary.expected_count) ?? 0;
+  const matchedCount = readSqlNumber(resolutionSummary.matched_count) ?? 0;
   const mismatchBase =
     matchedCount +
-    (resolutionSummary.true_mismatch_count ?? 0) +
-    (resolutionSummary.unexpected_idle_count ?? 0);
+    (readSqlNumber(resolutionSummary.true_mismatch_count) ?? 0) +
+    (readSqlNumber(resolutionSummary.unexpected_idle_count) ?? 0);
 
   return {
     totalEvents,
@@ -893,27 +977,21 @@ function readOverview(
     trueMismatchRate:
       expectedCount === 0
         ? 0
-        : (resolutionSummary.true_mismatch_count ?? 0) / expectedCount,
+        : (readSqlNumber(resolutionSummary.true_mismatch_count) ?? 0) /
+          expectedCount,
     unexpectedIdleRate:
       expectedCount === 0
         ? 0
-        : (resolutionSummary.unexpected_idle_count ?? 0) / expectedCount,
+        : (readSqlNumber(resolutionSummary.unexpected_idle_count) ?? 0) /
+          expectedCount,
     fallbackUsageRate:
       expectedCount === 0
         ? 0
-        : (resolutionSummary.fallback_count ?? 0) / expectedCount,
-    latencyP50Ms: percentile(
-      latencyValues.map((row) => row.behavior_to_presentation_latency_ms),
-      0.5,
-    ),
-    latencyP95Ms: percentile(
-      latencyValues.map((row) => row.behavior_to_presentation_latency_ms),
-      0.95,
-    ),
-    unexpectedIdleDwellP50Ms: percentile(
-      openIdleDurations.map((row) => row.effective_duration_ms),
-      0.5,
-    ),
+        : (readSqlNumber(resolutionSummary.fallback_count) ?? 0) /
+          expectedCount,
+    latencyP50Ms: percentile(latencyValues, 0.5),
+    latencyP95Ms: percentile(latencyValues, 0.95),
+    unexpectedIdleDwellP50Ms: percentile(openIdleDurations, 0.5),
   };
 }
 
@@ -922,11 +1000,7 @@ function renderAnalyticsHtml(input: {
   filters: GenerateAnalyticsReportOptions;
   overview: ReturnType<typeof readOverview>;
   providerSummary: ProviderSummaryRow[];
-  behaviorMix: Array<{
-    provider: AnalyticsProvider;
-    behavior_kind: string;
-    total_count: number;
-  }>;
+  behaviorMix: BehaviorMixRow[];
   eventCatalog: EventCatalogRow[];
   mismatchBuckets: MismatchBucketRow[];
   topOffenders: TopOffenderRow[];
@@ -1585,6 +1659,71 @@ function percentile(values: number[], quantile: number) {
   return values[index] ?? null;
 }
 
+function mapProviderSummaryRow(row: SqlRow): ProviderSummaryRow {
+  return {
+    provider: readSqlProvider(row.provider) ?? "claude",
+    total_events: readSqlNumber(row.total_events) ?? 0,
+    classified_events: readSqlNumber(row.classified_events) ?? 0,
+    unique_tool_count: readSqlNumber(row.unique_tool_count) ?? 0,
+    unique_behavior_count: readSqlNumber(row.unique_behavior_count) ?? 0,
+  };
+}
+
+function mapBehaviorMixRow(row: SqlRow): BehaviorMixRow {
+  return {
+    provider: readSqlProvider(row.provider) ?? "claude",
+    behavior_kind: readSqlString(row.behavior_kind) ?? "unknown",
+    total_count: readSqlNumber(row.total_count) ?? 0,
+  };
+}
+
+function mapEventCatalogRow(row: SqlRow): EventCatalogRow {
+  return {
+    provider: readSqlProvider(row.provider) ?? "claude",
+    event_type: readSqlString(row.event_type) ?? "unknown",
+    total_count: readSqlNumber(row.total_count) ?? 0,
+    classified_count: readSqlNumber(row.classified_count) ?? 0,
+    first_seen: readSqlString(row.first_seen) ?? "—",
+    last_seen: readSqlString(row.last_seen) ?? "—",
+  };
+}
+
+function mapMismatchBucketRow(row: SqlRow): MismatchBucketRow {
+  return {
+    reason: readSqlResolutionReason(row.reason) ?? "no_expected_behavior",
+    total_count: readSqlNumber(row.total_count) ?? 0,
+  };
+}
+
+function mapTopOffenderRow(row: SqlRow): TopOffenderRow {
+  return {
+    tool_name: readSqlString(row.tool_name),
+    resource_signature: readSqlString(row.resource_signature),
+    total_count: readSqlNumber(row.total_count) ?? 0,
+  };
+}
+
+function mapSessionSummaryRow(row: SqlRow): SessionSummaryRow {
+  return {
+    provider: readSqlProvider(row.provider),
+    project_root: readSqlString(row.project_root),
+    session_id: readSqlString(row.session_id),
+    expected_count: readSqlNumber(row.expected_count) ?? 0,
+    mismatch_count: readSqlNumber(row.mismatch_count) ?? 0,
+  };
+}
+
+function mapRawEventExplorerRow(row: SqlRow): RawEventExplorerRow {
+  return {
+    recorded_at: readSqlString(row.recorded_at) ?? "—",
+    provider: readSqlProvider(row.provider) ?? "claude",
+    project_root: readSqlString(row.project_root),
+    session_id: readSqlString(row.session_id) ?? "unknown-session",
+    event_type: readSqlString(row.event_type) ?? "Unknown",
+    payload_json: readSqlString(row.payload_json) ?? "{}",
+  };
+}
+
 function formatPercent(value: number) {
   return `${(value * 100).toFixed(1)}%`;
 }
@@ -1608,10 +1747,55 @@ function asRecord(value: unknown): Record<string, unknown> | null {
     : null;
 }
 
+function asSqlRow(value: unknown): SqlRow | null {
+  return typeof value === "object" && value !== null ? (value as SqlRow) : null;
+}
+
 function readString(value: unknown) {
   return typeof value === "string" && value.length > 0 ? value : null;
 }
 
 function readNullableString(value: unknown) {
   return typeof value === "string" && value.length > 0 ? value : null;
+}
+
+function readSqlString(value: SQLOutputValue | undefined) {
+  return typeof value === "string" && value.length > 0 ? value : null;
+}
+
+function readSqlNumber(value: SQLOutputValue | undefined) {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+
+  if (typeof value === "bigint") {
+    return Number(value);
+  }
+
+  return null;
+}
+
+function readSqlProvider(
+  value: SQLOutputValue | undefined,
+): AnalyticsProvider | null {
+  return value === "claude" || value === "codex" ? value : null;
+}
+
+function readSqlResolutionReason(
+  value: SQLOutputValue | undefined,
+): AnalyticsResolutionReason | null {
+  switch (value) {
+    case "matched_behavior":
+    case "fallback_state":
+    case "true_mismatch":
+    case "unexpected_idle":
+    case "no_expected_behavior":
+      return value;
+    default:
+      return null;
+  }
+}
+
+function isDefinedNumber(value: number | null): value is number {
+  return value !== null;
 }

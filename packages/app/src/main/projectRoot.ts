@@ -21,6 +21,30 @@ export function resolveBundledAssetDirectoryForRuntime(options: {
   );
 }
 
+export function resolveBundledProfileSeedDirectoryForRuntime(options: {
+  projectRoot: string;
+  profileId: string;
+  isPackaged: boolean;
+  resourcesPath?: string;
+}) {
+  if (options.isPackaged) {
+    return join(
+      options.resourcesPath ?? process.resourcesPath,
+      "bundled-profiles",
+      options.profileId,
+    );
+  }
+
+  return join(
+    resolveProjectRoot(options.projectRoot),
+    "packages",
+    "app",
+    "resources",
+    "bundled-profiles",
+    options.profileId,
+  );
+}
+
 export function resolveProjectRoot(startDirectory: string) {
   let currentDirectory = resolve(startDirectory);
 
