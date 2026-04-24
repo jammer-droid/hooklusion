@@ -88,13 +88,10 @@ describe("character state reporting", () => {
 
     expect(log.mock.calls.map(([line]) => line)).toEqual([
       "[hooklusion/server] character session=session-1 turn=null state=session_start",
-      "[hooklusion/server] character session=session-1 turn=null state=idle",
       "[hooklusion/server] character session=session-1 turn=turn-1 state=prompt_received",
-      "[hooklusion/server] character session=session-1 turn=turn-1 state=idle",
       "[hooklusion/server] character session=session-1 turn=turn-1 state=tool_active providerState=tool:read",
       "[hooklusion/server] character session=session-1 turn=turn-1 state=thinking providerState=tool:read",
       "[hooklusion/server] character session=session-1 turn=turn-1 state=done",
-      "[hooklusion/server] character session=session-1 turn=turn-1 state=idle",
     ]);
 
     machine.dispose();

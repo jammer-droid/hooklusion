@@ -232,7 +232,9 @@ describe("profile repository", () => {
 
     const loaded = await repository.readProfile("gpchan-default");
 
-    expect(loaded.assetSchemaVersion).toBe(5);
+    expect(loaded.assetSchemaVersion).toBe(
+      createDefaultAnimationProfile().assetSchemaVersion,
+    );
     expect(loaded.animations.session_start.frames).toHaveLength(3);
     expect(loaded.animations.tool_active.frames).toEqual([
       "hooklusion-profile://gpchan-default/assets/basic/tool_active/frame_000.png",

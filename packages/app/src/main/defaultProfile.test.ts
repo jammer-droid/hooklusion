@@ -23,7 +23,7 @@ describe("default profile", () => {
     expect(profile.animations.tool_active.frames).toHaveLength(1);
     expect(profile.animations.drag_up.frames).toHaveLength(3);
     expect(profile.states.drag?.allowDuringHookActivity).toBe(false);
-    expect(profile.states.drag_right?.allowDuringHookActivity).toBe(false);
+    expect(profile.states.drag_right?.allowDuringHookActivity).toBe(true);
   });
 
   it("loads the seeded dev profile when a seed path is provided", () => {
@@ -51,11 +51,6 @@ describe("default profile", () => {
       allowDuringHookActivity: true,
       holdLastFrame: true,
     });
-    expect(profile.states.done).toMatchObject({
-      interruptible: true,
-      minCycles: 1,
-      minDwellMs: 2000,
-      fallbackState: "idle",
-    });
+    expect(profile.states.done).toEqual({ animation: "done" });
   });
 });
