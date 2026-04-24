@@ -11,12 +11,13 @@ import { installClaudeHooks, uninstallClaudeHooks } from "./claudeHooks.js";
 const execFileAsync = promisify(execFile);
 
 describe("Claude hook installer", () => {
-  it("installs hooklusion hook entries without removing unrelated hooks", async () => {
+  it("appends hooklusion hook commands without removing unrelated hooks", async () => {
     const settingsPath = await createSettingsFile({
       hooks: {
         Stop: [
           {
-            hooks: [{ type: "command", command: "echo keep-me" }],
+            matcher: "*",
+            hooks: [{ type: "command", command: "echo keep-me", timeout: 10 }],
           },
         ],
       },
@@ -26,8 +27,12 @@ describe("Claude hook installer", () => {
 
     const settings = await readSettings(settingsPath);
 
-    expect(settings.hooks.Stop).toHaveLength(2);
+    expect(settings.hooks.Stop).toHaveLength(1);
+    expect(settings.hooks.Stop[0].matcher).toBe("*");
+    expect(settings.hooks.Stop[0].hooks).toHaveLength(2);
     expect(settings.hooks.Stop[0].hooks[0].command).toBe("echo keep-me");
+    expect(settings.hooks.Stop[0].hooks[0].timeout).toBe(10);
+    expect(settings.hooks.Stop[0].hooks[1].command).toContain("hooklusion");
     expect(settings.hooks.SessionStart[0].hooks[0].command).toContain(
       "hooklusion",
     );
@@ -94,12 +99,13 @@ describe("Claude hook installer", () => {
     });
   });
 
-  it("removes only hooklusion owned hook entries during uninstall", async () => {
+  it("removes only hooklusion owned hook commands during uninstall", async () => {
     const settingsPath = await createSettingsFile({
       hooks: {
         Stop: [
           {
-            hooks: [{ type: "command", command: "echo keep-me" }],
+            matcher: "*",
+            hooks: [{ type: "command", command: "echo keep-me", timeout: 10 }],
           },
         ],
       },
@@ -111,7 +117,10 @@ describe("Claude hook installer", () => {
     const settings = await readSettings(settingsPath);
 
     expect(settings.hooks.Stop).toHaveLength(1);
+    expect(settings.hooks.Stop[0].matcher).toBe("*");
+    expect(settings.hooks.Stop[0].hooks).toHaveLength(1);
     expect(settings.hooks.Stop[0].hooks[0].command).toBe("echo keep-me");
+    expect(settings.hooks.Stop[0].hooks[0].timeout).toBe(10);
     expect(settings.hooks.SessionStart).toBeUndefined();
   });
 
@@ -157,7 +166,10 @@ async function readSettings(settingsPath: string) {
   return JSON.parse(await readFile(settingsPath, "utf8")) as {
     hooks: Record<
       string,
-      Array<{ matcher?: string; hooks: Array<{ command: string }> }>
+      Array<{
+        matcher?: string;
+        hooks: Array<{ command: string; timeout?: number }>;
+      }>
     >;
   };
 }

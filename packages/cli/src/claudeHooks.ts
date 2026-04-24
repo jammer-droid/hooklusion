@@ -15,11 +15,13 @@ type ClaudeHookEvent =
 interface ClaudeHookCommand {
   type: "command";
   command: string;
+  [key: string]: unknown;
 }
 
 interface ClaudeHookMatcher {
   matcher?: string;
   hooks: ClaudeHookCommand[];
+  [key: string]: unknown;
 }
 
 interface ClaudeSettings {
@@ -50,14 +52,14 @@ export async function installClaudeHooks({
 
   for (const eventName of HOOK_EVENTS) {
     const existingEntries = Array.isArray(hooks[eventName])
-      ? [...hooks[eventName]]
+      ? removeProjectCHookCommands(hooks[eventName])
       : [];
-    const projectCEntry = createHookEntry(eventName, serverUrl);
 
-    hooks[eventName] = [
-      ...existingEntries.filter((entry) => !isProjectCHookEntry(entry)),
-      projectCEntry,
-    ];
+    hooks[eventName] = appendHookCommand(
+      existingEntries,
+      createHookCommand(eventName, serverUrl),
+      eventName,
+    );
   }
 
   await writeClaudeSettings(settingsPath, {
@@ -74,11 +76,9 @@ export async function uninstallClaudeHooks({
 
   for (const eventName of HOOK_EVENTS) {
     const existingEntries = Array.isArray(hooks[eventName])
-      ? [...hooks[eventName]]
+      ? hooks[eventName]
       : [];
-    const remainingEntries = existingEntries.filter(
-      (entry) => !isProjectCHookEntry(entry),
-    );
+    const remainingEntries = removeProjectCHookCommands(existingEntries);
 
     if (remainingEntries.length === 0) {
       delete hooks[eventName];
@@ -94,10 +94,10 @@ export async function uninstallClaudeHooks({
   });
 }
 
-function createHookEntry(
+function createHookCommand(
   eventName: ClaudeHookEvent,
   serverUrl: string,
-): ClaudeHookMatcher {
+): ClaudeHookCommand {
   const command = [
     `HOOKLUSION_CLAUDE_HOOK=${eventName}`,
     `HOOKLUSION_CLAUDE_HOOK_MARKER=${HOOKLUSION_MARKER}`,
@@ -105,29 +105,86 @@ function createHookEntry(
     `'curl -fsS --max-time 1 -X POST "${serverUrl}" -H "content-type: application/json" -H "x-hooklusion-host-pid: $PPID" --data-binary @- >/dev/null 2>&1 || true'`,
   ].join(" ");
 
+  return { type: "command", command };
+}
+
+function appendHookCommand(
+  entries: unknown[],
+  hookCommand: ClaudeHookCommand,
+  eventName: ClaudeHookEvent,
+) {
+  const nextEntries: unknown[] = [];
+  let appended = false;
+
+  for (const entry of entries) {
+    if (!isHookMatcher(entry)) {
+      nextEntries.push(entry);
+      continue;
+    }
+
+    if (appended || !canAppendToEntry(entry, eventName)) {
+      nextEntries.push(entry);
+      continue;
+    }
+
+    nextEntries.push({
+      ...entry,
+      hooks: [...entry.hooks, hookCommand],
+    });
+    appended = true;
+  }
+
+  if (!appended) {
+    nextEntries.push(createHookEntry(eventName, hookCommand));
+  }
+
+  return nextEntries as ClaudeHookMatcher[];
+}
+
+function createHookEntry(
+  eventName: ClaudeHookEvent,
+  hookCommand: ClaudeHookCommand,
+): ClaudeHookMatcher {
   if (eventName === "PreToolUse" || eventName === "PostToolUse") {
     return {
       matcher: "*",
-      hooks: [{ type: "command", command }],
+      hooks: [hookCommand],
     };
   }
 
   return {
-    hooks: [{ type: "command", command }],
+    hooks: [hookCommand],
   };
 }
 
-function isProjectCHookEntry(entry: unknown): entry is ClaudeHookMatcher {
-  if (!isHookMatcher(entry)) {
-    return false;
+function canAppendToEntry(
+  entry: ClaudeHookMatcher,
+  eventName: ClaudeHookEvent,
+) {
+  if (eventName === "PreToolUse" || eventName === "PostToolUse") {
+    return entry.matcher === "*";
   }
 
-  return entry.hooks.some(
-    (hook) =>
-      hook.type === "command" &&
-      [HOOKLUSION_MARKER, LEGACY_PROJECT_C_MARKER].some((marker) =>
-        hook.command.includes(marker),
-      ),
+  return true;
+}
+
+function removeProjectCHookCommands(entries: unknown[]) {
+  return entries.flatMap((entry) => {
+    if (!isHookMatcher(entry)) {
+      return [entry as ClaudeHookMatcher];
+    }
+
+    const hooks = entry.hooks.filter((hook) => !isProjectCHookCommand(hook));
+    return hooks.length > 0 ? [{ ...entry, hooks }] : [];
+  });
+}
+
+function isProjectCHookCommand(hook: ClaudeHookCommand) {
+  return (
+    hook.type === "command" &&
+    [HOOKLUSION_MARKER, LEGACY_PROJECT_C_MARKER].some((marker) =>
+      hook.command.includes(marker),
+    )
   );
 }
 

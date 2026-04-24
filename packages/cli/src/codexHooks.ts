@@ -15,10 +15,13 @@ type CodexHookEvent =
 interface CodexHookCommand {
   type: "command";
   command: string;
+  [key: string]: unknown;
 }
 
 interface CodexHookEntry {
+  matcher?: string;
   hooks: CodexHookCommand[];
+  [key: string]: unknown;
 }
 
 interface CodexHooksConfig {
@@ -51,14 +54,13 @@ export async function installCodexHooks({
 
   for (const eventName of HOOK_EVENTS) {
     const existingEntries = Array.isArray(hooks[eventName])
-      ? [...hooks[eventName]]
+      ? removeProjectCHookCommands(hooks[eventName])
       : [];
-    const projectCEntry = createHookEntry(eventName, serverUrl);
 
-    hooks[eventName] = [
-      ...existingEntries.filter((entry) => !isProjectCHookEntry(entry)),
-      projectCEntry,
-    ];
+    hooks[eventName] = appendHookCommand(
+      existingEntries,
+      createHookCommand(eventName, serverUrl),
+    );
   }
 
   await writeCodexHooks(hooksPath, {
@@ -74,11 +76,9 @@ export async function uninstallCodexHooks({ hooksPath }: CodexHooksOptions) {
 
   for (const eventName of HOOK_EVENTS) {
     const existingEntries = Array.isArray(hooks[eventName])
-      ? [...hooks[eventName]]
+      ? hooks[eventName]
       : [];
-    const remainingEntries = existingEntries.filter(
-      (entry) => !isProjectCHookEntry(entry),
-    );
+    const remainingEntries = removeProjectCHookCommands(existingEntries);
 
     if (remainingEntries.length === 0) {
       delete hooks[eventName];
@@ -94,10 +94,10 @@ export async function uninstallCodexHooks({ hooksPath }: CodexHooksOptions) {
   });
 }
 
-function createHookEntry(
+function createHookCommand(
   eventName: CodexHookEvent,
   serverUrl: string,
-): CodexHookEntry {
+): CodexHookCommand {
   const command = [
     `HOOKLUSION_CODEX_HOOK=${eventName}`,
     `HOOKLUSION_CODEX_HOOK_MARKER=${HOOKLUSION_MARKER}`,
@@ -105,22 +105,55 @@ function createHookEntry(
     `'curl -fsS --max-time 1 -X POST "${serverUrl}" -H "content-type: application/json" -H "x-hooklusion-provider: codex" -H "x-hooklusion-host-pid: $PPID" --data-binary @- >/dev/null 2>&1 || true'`,
   ].join(" ");
 
-  return {
-    hooks: [{ type: "command", command }],
-  };
+  return { type: "command", command };
 }
 
-function isProjectCHookEntry(entry: unknown): entry is CodexHookEntry {
-  if (!isHookEntry(entry)) {
-    return false;
+function appendHookCommand(entries: unknown[], hookCommand: CodexHookCommand) {
+  const nextEntries: unknown[] = [];
+  let appended = false;
+
+  for (const entry of entries) {
+    if (!isHookEntry(entry)) {
+      nextEntries.push(entry);
+      continue;
+    }
+
+    if (appended) {
+      nextEntries.push(entry);
+      continue;
+    }
+
+    nextEntries.push({
+      ...entry,
+      hooks: [...entry.hooks, hookCommand],
+    });
+    appended = true;
   }
 
-  return entry.hooks.some(
-    (hook) =>
-      hook.type === "command" &&
-      [HOOKLUSION_MARKER, LEGACY_PROJECT_C_MARKER].some((marker) =>
-        hook.command.includes(marker),
-      ),
+  if (!appended) {
+    nextEntries.push({ hooks: [hookCommand] });
+  }
+
+  return nextEntries as CodexHookEntry[];
+}
+
+function removeProjectCHookCommands(entries: unknown[]) {
+  return entries.flatMap((entry) => {
+    if (!isHookEntry(entry)) {
+      return [entry as CodexHookEntry];
+    }
+
+    const hooks = entry.hooks.filter((hook) => !isProjectCHookCommand(hook));
+    return hooks.length > 0 ? [{ ...entry, hooks }] : [];
+  });
+}
+
+function isProjectCHookCommand(hook: CodexHookCommand) {
+  return (
+    hook.type === "command" &&
+    [HOOKLUSION_MARKER, LEGACY_PROJECT_C_MARKER].some((marker) =>
+      hook.command.includes(marker),
+    )
   );
 }
 

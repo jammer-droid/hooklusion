@@ -11,12 +11,13 @@ import { installCodexHooks, uninstallCodexHooks } from "./codexHooks.js";
 const execFileAsync = promisify(execFile);
 
 describe("Codex hook installer", () => {
-  it("installs hooklusion hook entries without removing unrelated hooks", async () => {
+  it("appends hooklusion hook commands without removing unrelated hooks", async () => {
     const { hooksPath, configPath } = await createCodexFiles({
       hooks: {
         Stop: [
           {
-            hooks: [{ type: "command", command: "echo keep-me" }],
+            matcher: "*",
+            hooks: [{ type: "command", command: "echo keep-me", timeout: 10 }],
           },
         ],
       },
@@ -26,8 +27,12 @@ describe("Codex hook installer", () => {
 
     const hooks = await readHooks(hooksPath);
 
-    expect(hooks.hooks.Stop).toHaveLength(2);
+    expect(hooks.hooks.Stop).toHaveLength(1);
+    expect(hooks.hooks.Stop[0].matcher).toBe("*");
+    expect(hooks.hooks.Stop[0].hooks).toHaveLength(2);
     expect(hooks.hooks.Stop[0].hooks[0].command).toBe("echo keep-me");
+    expect(hooks.hooks.Stop[0].hooks[0].timeout).toBe(10);
+    expect(hooks.hooks.Stop[0].hooks[1].command).toContain("hooklusion");
     expect(hooks.hooks.SessionStart[0].hooks[0].command).toContain(
       "hooklusion",
     );
@@ -112,12 +117,13 @@ describe("Codex hook installer", () => {
     });
   });
 
-  it("removes only hooklusion owned hook entries during uninstall", async () => {
+  it("removes only hooklusion owned hook commands during uninstall", async () => {
     const { hooksPath, configPath } = await createCodexFiles({
       hooks: {
         Stop: [
           {
-            hooks: [{ type: "command", command: "echo keep-me" }],
+            matcher: "*",
+            hooks: [{ type: "command", command: "echo keep-me", timeout: 10 }],
           },
         ],
       },
@@ -129,7 +135,10 @@ describe("Codex hook installer", () => {
     const hooks = await readHooks(hooksPath);
 
     expect(hooks.hooks.Stop).toHaveLength(1);
+    expect(hooks.hooks.Stop[0].matcher).toBe("*");
+    expect(hooks.hooks.Stop[0].hooks).toHaveLength(1);
     expect(hooks.hooks.Stop[0].hooks[0].command).toBe("echo keep-me");
+    expect(hooks.hooks.Stop[0].hooks[0].timeout).toBe(10);
     expect(hooks.hooks.SessionStart).toBeUndefined();
   });
 
@@ -175,6 +184,12 @@ async function createCodexFiles(hooksContents: unknown, config = "") {
 
 async function readHooks(hooksPath: string) {
   return JSON.parse(await readFile(hooksPath, "utf8")) as {
-    hooks: Record<string, Array<{ hooks: Array<{ command: string }> }>>;
+    hooks: Record<
+      string,
+      Array<{
+        matcher?: string;
+        hooks: Array<{ command: string; timeout?: number }>;
+      }>
+    >;
   };
 }
