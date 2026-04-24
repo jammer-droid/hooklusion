@@ -40,6 +40,7 @@ interface CreateSessionRegistryOptions {
 
 interface PruneSessionsOptions {
   isProcessAlive(pid: number): boolean;
+  staleAfterDeadPidMs: number | null;
   staleWithoutPidAfterMs: number | null;
   prunedAt?: number;
 }
@@ -163,6 +164,7 @@ export function createSessionRegistry({
 
   function pruneSessions({
     isProcessAlive,
+    staleAfterDeadPidMs,
     staleWithoutPidAfterMs,
     prunedAt = now(),
   }: PruneSessionsOptions): PruneSessionsResult {
@@ -171,7 +173,9 @@ export function createSessionRegistry({
     for (const [sessionKey, summary] of sessions.entries()) {
       const shouldRemove =
         summary.pid !== null
-          ? !isProcessAlive(summary.pid)
+          ? !isProcessAlive(summary.pid) &&
+            staleAfterDeadPidMs !== null &&
+            prunedAt - summary.lastEventAt >= staleAfterDeadPidMs
           : staleWithoutPidAfterMs !== null &&
             prunedAt - summary.lastEventAt >= staleWithoutPidAfterMs;
 

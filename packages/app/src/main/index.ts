@@ -159,6 +159,7 @@ const DEFAULT_PROJECT_ROOT = resolveProjectRoot(
 );
 const DEFAULT_LIVE_BRIDGE_POLL_MS = 500;
 const SESSION_SWEEP_INTERVAL_MS = 5_000;
+const SESSION_DEAD_PID_GRACE_MS = 30 * 60_000;
 const SAFE_PROFILE_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
 const LAUNCH_VISIBILITY_FALLBACK_DELAY_MS = 1_500;
 const GPCHAN_DEFAULT_PROFILE_SEED_DIRECTORY = app.isPackaged
@@ -1566,6 +1567,7 @@ function pruneInactiveSessions() {
     sessionRegistry.getSelection().pinnedSessionKey;
   const result = sessionRegistry.pruneSessions({
     isProcessAlive,
+    staleAfterDeadPidMs: SESSION_DEAD_PID_GRACE_MS,
     staleWithoutPidAfterMs: null,
   });
 

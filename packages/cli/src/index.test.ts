@@ -93,4 +93,14 @@ describe("parseCliOptions", () => {
     expect(options.sessionId).toBe("session-123");
     expect(options.outputPath).toBe("/tmp/report.html");
   });
+
+  it("parses the analytics current session scope option", () => {
+    const options = parseCliOptions(["analytics", "generate", "--current"], {
+      HOME: "/Users/tester",
+    });
+
+    expect(options.command).toBe("analytics");
+    expect(options.subcommand).toBe("generate");
+    expect(options.currentDisplayedSession).toBe(true);
+  });
 });

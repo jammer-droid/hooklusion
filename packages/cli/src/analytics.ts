@@ -22,10 +22,13 @@ export type AnalyticsBehaviorKind =
   | "done";
 export type AnalyticsResolutionReason =
   | "matched_behavior"
+  | "interrupted_before_visible"
   | "fallback_state"
   | "true_mismatch"
   | "unexpected_idle"
   | "no_expected_behavior";
+
+const MIN_VISIBLE_PRESENTATION_MS = 250;
 
 export interface ClassifiedBehaviorRecord {
   behaviorKind: AnalyticsBehaviorKind;
@@ -153,6 +156,7 @@ export interface GenerateAnalyticsReportOptions extends AnalyticsFilters {
   databasePath: string;
   outputPath: string;
   generatedAt?: Date;
+  currentDisplayedSession?: boolean;
 }
 
 interface ProviderSummaryRow {
@@ -189,6 +193,7 @@ interface SessionSummaryRow {
   session_id: string | null;
   expected_count: number;
   mismatch_count: number;
+  timing_overlap_count: number;
 }
 
 interface RawEventExplorerRow {
@@ -379,6 +384,13 @@ export class AnalyticsStore {
           sessionId: input.sessionId,
           endedAt: input.recordedAt,
         });
+      this.markInterruptedPresentationResolutions({
+        provider: input.provider,
+        sessionId: input.sessionId,
+        endedAt: input.recordedAt,
+        interruptedAt: input.recordedAt,
+        interruptedByState: input.presentedState,
+      });
     }
 
     const result = this.database
@@ -612,6 +624,10 @@ export class AnalyticsStore {
     return this.database;
   }
 
+  close() {
+    this.database.close();
+  }
+
   private initializeSchema() {
     this.database.exec(`
       CREATE TABLE IF NOT EXISTS analytics_settings (
@@ -713,6 +729,66 @@ export class AnalyticsStore {
         ON presentation_resolutions(is_displayed_session, recorded_at_ms);
     `);
   }
+
+  private markInterruptedPresentationResolutions(input: {
+    provider: AnalyticsProvider;
+    sessionId: string;
+    endedAt: string;
+    interruptedAt: string;
+    interruptedByState: string;
+  }) {
+    const rows = this.database
+      .prepare(
+        `SELECT
+           resolution.id AS resolution_id,
+           resolution.notes_json AS notes_json,
+           presentation.duration_ms AS duration_ms
+         FROM presentation_events presentation
+         INNER JOIN presentation_resolutions resolution
+           ON resolution.presentation_event_id = presentation.id
+         WHERE presentation.provider = :provider
+           AND presentation.session_id = :sessionId
+           AND presentation.ended_at = :endedAt
+           AND presentation.duration_ms IS NOT NULL
+           AND presentation.duration_ms >= 0
+           AND presentation.duration_ms < :visibleThresholdMs
+           AND presentation.presented_state <> :interruptedByState
+           AND resolution.reason = 'matched_behavior'`,
+      )
+      .all({
+        provider: input.provider,
+        sessionId: input.sessionId,
+        endedAt: input.endedAt,
+        visibleThresholdMs: MIN_VISIBLE_PRESENTATION_MS,
+        interruptedByState: input.interruptedByState,
+      });
+
+    const update = this.database.prepare(
+      `UPDATE presentation_resolutions
+       SET reason = 'interrupted_before_visible',
+           notes_json = :notesJson
+       WHERE id = :resolutionId`,
+    );
+
+    for (const row of rows) {
+      const sqlRow = row as SqlRow;
+      const durationMs = readSqlNumber(sqlRow.duration_ms);
+      if (durationMs === null) {
+        continue;
+      }
+
+      update.run({
+        resolutionId: sqlRow.resolution_id,
+        notesJson: JSON.stringify({
+          ...readNotesJson(sqlRow.notes_json),
+          visibleThresholdMs: MIN_VISIBLE_PRESENTATION_MS,
+          actualDurationMs: durationMs,
+          interruptedAt: input.interruptedAt,
+          interruptedByState: input.interruptedByState,
+        }),
+      });
+    }
+  }
 }
 
 export function createAnalyticsStore(options: { databasePath: string }) {
@@ -758,16 +834,20 @@ export function generateAnalyticsReport(
   options: GenerateAnalyticsReportOptions,
 ) {
   const store = createAnalyticsStore({ databasePath: options.databasePath });
-  store.pruneExpiredRecords();
-  const database = store.getDatabase();
-  const generatedAt = options.generatedAt ?? new Date();
-  const resolvedFilters = resolveReportFilters(store, database, options);
-  const filter = buildFilterClause(resolvedFilters, generatedAt);
+  try {
+    store.pruneExpiredRecords();
+    const database = store.getDatabase();
+    const generatedAt = options.generatedAt ?? new Date();
+    const resolvedFilters =
+      options.currentDisplayedSession === true
+        ? resolveReportFilters(store, database, options)
+        : options;
+    const filter = buildFilterClause(resolvedFilters, generatedAt);
 
-  const overview = readOverview(database, filter, generatedAt);
-  const providerSummary = database
-    .prepare(
-      `SELECT
+    const overview = readOverview(database, filter, generatedAt);
+    const providerSummary = database
+      .prepare(
+        `SELECT
        raw.provider AS provider,
        COUNT(*) AS total_events,
        SUM(CASE WHEN classified.id IS NOT NULL THEN 1 ELSE 0 END) AS classified_events,
@@ -778,12 +858,12 @@ export function generateAnalyticsReport(
      ${filter.rawWhereSql}
      GROUP BY raw.provider
      ORDER BY raw.provider`,
-    )
-    .all(filter.rawParameters)
-    .map(mapProviderSummaryRow);
-  const behaviorMix = database
-    .prepare(
-      `SELECT
+      )
+      .all(filter.rawParameters)
+      .map(mapProviderSummaryRow);
+    const behaviorMix = database
+      .prepare(
+        `SELECT
        classified.provider AS provider,
        classified.behavior_kind AS behavior_kind,
        COUNT(*) AS total_count
@@ -791,12 +871,12 @@ export function generateAnalyticsReport(
      ${filter.classifiedWhereSql}
      GROUP BY classified.provider, classified.behavior_kind
      ORDER BY classified.provider, total_count DESC`,
-    )
-    .all(filter.classifiedParameters)
-    .map(mapBehaviorMixRow);
-  const eventCatalog = database
-    .prepare(
-      `SELECT
+      )
+      .all(filter.classifiedParameters)
+      .map(mapBehaviorMixRow);
+    const eventCatalog = database
+      .prepare(
+        `SELECT
        raw.provider AS provider,
        raw.event_type AS event_type,
        COUNT(*) AS total_count,
@@ -808,24 +888,24 @@ export function generateAnalyticsReport(
      ${filter.rawWhereSql}
      GROUP BY raw.provider, raw.event_type
      ORDER BY total_count DESC, raw.provider, raw.event_type`,
-    )
-    .all(filter.rawParameters)
-    .map(mapEventCatalogRow);
-  const mismatchBuckets = database
-    .prepare(
-      `SELECT
+      )
+      .all(filter.rawParameters)
+      .map(mapEventCatalogRow);
+    const mismatchBuckets = database
+      .prepare(
+        `SELECT
        resolution.reason AS reason,
        COUNT(*) AS total_count
      FROM presentation_resolutions resolution
      ${filter.resolutionWhereSql}
      GROUP BY resolution.reason
      ORDER BY total_count DESC`,
-    )
-    .all(filter.resolutionParameters)
-    .map(mapMismatchBucketRow);
-  const topOffenders = database
-    .prepare(
-      `SELECT
+      )
+      .all(filter.resolutionParameters)
+      .map(mapMismatchBucketRow);
+    const topOffenders = database
+      .prepare(
+        `SELECT
        classified.tool_name AS tool_name,
        classified.resource_signature AS resource_signature,
        COUNT(*) AS total_count
@@ -840,28 +920,29 @@ export function generateAnalyticsReport(
      HAVING total_count > 0
      ORDER BY total_count DESC
      LIMIT 15`,
-    )
-    .all(filter.resolutionParameters)
-    .map(mapTopOffenderRow);
-  const sessionSummary = database
-    .prepare(
-      `SELECT
+      )
+      .all(filter.resolutionParameters)
+      .map(mapTopOffenderRow);
+    const sessionSummary = database
+      .prepare(
+        `SELECT
        resolution.provider AS provider,
        resolution.project_root AS project_root,
        resolution.session_id AS session_id,
        COUNT(*) AS expected_count,
-       SUM(CASE WHEN resolution.reason IN ('true_mismatch', 'unexpected_idle', 'fallback_state') THEN 1 ELSE 0 END) AS mismatch_count
+       SUM(CASE WHEN resolution.reason IN ('true_mismatch', 'unexpected_idle', 'fallback_state') THEN 1 ELSE 0 END) AS mismatch_count,
+       SUM(CASE WHEN resolution.reason = 'interrupted_before_visible' THEN 1 ELSE 0 END) AS timing_overlap_count
      FROM presentation_resolutions resolution
      ${appendCondition(filter.resolutionWhereSql, `resolution.expected_behavior IS NOT NULL`)}
      GROUP BY resolution.provider, resolution.project_root, resolution.session_id
      ORDER BY mismatch_count DESC, expected_count DESC
      LIMIT 20`,
-    )
-    .all(filter.resolutionParameters)
-    .map(mapSessionSummaryRow);
-  const rawEventRows = database
-    .prepare(
-      `SELECT
+      )
+      .all(filter.resolutionParameters)
+      .map(mapSessionSummaryRow);
+    const rawEventRows = database
+      .prepare(
+        `SELECT
        raw.recorded_at AS recorded_at,
        raw.provider AS provider,
        raw.project_root AS project_root,
@@ -872,25 +953,28 @@ export function generateAnalyticsReport(
      ${filter.rawWhereSql}
      ORDER BY raw.recorded_at_ms DESC
      LIMIT 50`,
-    )
-    .all(filter.rawParameters)
-    .map(mapRawEventExplorerRow);
+      )
+      .all(filter.rawParameters)
+      .map(mapRawEventExplorerRow);
 
-  const html = renderAnalyticsHtml({
-    generatedAt,
-    filters: resolvedFilters,
-    overview,
-    providerSummary,
-    behaviorMix,
-    eventCatalog,
-    mismatchBuckets,
-    topOffenders,
-    sessionSummary,
-    rawEventRows,
-  });
+    const html = renderAnalyticsHtml({
+      generatedAt,
+      filters: resolvedFilters,
+      overview,
+      providerSummary,
+      behaviorMix,
+      eventCatalog,
+      mismatchBuckets,
+      topOffenders,
+      sessionSummary,
+      rawEventRows,
+    });
 
-  mkdirSync(dirname(options.outputPath), { recursive: true });
-  writeFileSync(options.outputPath, html, "utf8");
+    mkdirSync(dirname(options.outputPath), { recursive: true });
+    writeFileSync(options.outputPath, html, "utf8");
+  } finally {
+    store.close();
+  }
 }
 
 function readOverview(
@@ -921,6 +1005,7 @@ function readOverview(
           `SELECT
            SUM(CASE WHEN resolution.expected_behavior IS NOT NULL THEN 1 ELSE 0 END) AS expected_count,
            SUM(CASE WHEN resolution.reason = 'matched_behavior' THEN 1 ELSE 0 END) AS matched_count,
+           SUM(CASE WHEN resolution.reason = 'interrupted_before_visible' THEN 1 ELSE 0 END) AS timing_overlap_count,
            SUM(CASE WHEN resolution.reason = 'true_mismatch' THEN 1 ELSE 0 END) AS true_mismatch_count,
            SUM(CASE WHEN resolution.reason = 'unexpected_idle' THEN 1 ELSE 0 END) AS unexpected_idle_count,
            SUM(CASE WHEN resolution.reason = 'fallback_state' THEN 1 ELSE 0 END) AS fallback_count
@@ -962,8 +1047,11 @@ function readOverview(
 
   const expectedCount = readSqlNumber(resolutionSummary.expected_count) ?? 0;
   const matchedCount = readSqlNumber(resolutionSummary.matched_count) ?? 0;
+  const timingOverlapCount =
+    readSqlNumber(resolutionSummary.timing_overlap_count) ?? 0;
   const mismatchBase =
     matchedCount +
+    timingOverlapCount +
     (readSqlNumber(resolutionSummary.true_mismatch_count) ?? 0) +
     (readSqlNumber(resolutionSummary.unexpected_idle_count) ?? 0);
 
@@ -973,7 +1061,12 @@ function readOverview(
     classificationCoverageRate:
       totalEvents === 0 ? 0 : classifiedEvents / totalEvents,
     expectedCount,
-    animationAccuracy: mismatchBase === 0 ? 0 : matchedCount / mismatchBase,
+    animationAccuracy:
+      mismatchBase === 0
+        ? 0
+        : (matchedCount + timingOverlapCount) / mismatchBase,
+    timingOverlapRate:
+      expectedCount === 0 ? 0 : timingOverlapCount / expectedCount,
     trueMismatchRate:
       expectedCount === 0
         ? 0
@@ -1126,6 +1219,7 @@ function renderAnalyticsHtml(input: {
         <div class="card"><span>Total events</span><strong>${overview.totalEvents}</strong></div>
         <div class="card"><span>Classification coverage</span><strong>${formatPercent(overview.classificationCoverageRate)}</strong></div>
         <div class="card"><span>Animation accuracy</span><strong>${formatPercent(overview.animationAccuracy)}</strong></div>
+        <div class="card"><span>Timing overlap rate</span><strong>${formatPercent(overview.timingOverlapRate)}</strong></div>
         <div class="card"><span>True mismatch rate</span><strong>${formatPercent(overview.trueMismatchRate)}</strong></div>
         <div class="card"><span>Unexpected idle rate</span><strong>${formatPercent(overview.unexpectedIdleRate)}</strong></div>
         <div class="card"><span>Fallback usage rate</span><strong>${formatPercent(overview.fallbackUsageRate)}</strong></div>
@@ -1228,6 +1322,7 @@ function renderAnalyticsHtml(input: {
           "Session",
           "Expected resolutions",
           "Mismatch count",
+          "Timing overlap count",
           "Mismatch density",
         ],
         input.sessionSummary.map((row) => [
@@ -1236,6 +1331,7 @@ function renderAnalyticsHtml(input: {
           escapeHtml(row.session_id ?? "—"),
           String(row.expected_count),
           String(row.mismatch_count),
+          String(row.timing_overlap_count),
           formatPercent(
             row.expected_count === 0
               ? 0
@@ -1710,6 +1806,7 @@ function mapSessionSummaryRow(row: SqlRow): SessionSummaryRow {
     session_id: readSqlString(row.session_id),
     expected_count: readSqlNumber(row.expected_count) ?? 0,
     mismatch_count: readSqlNumber(row.mismatch_count) ?? 0,
+    timing_overlap_count: readSqlNumber(row.timing_overlap_count) ?? 0,
   };
 }
 
@@ -1786,6 +1883,7 @@ function readSqlResolutionReason(
 ): AnalyticsResolutionReason | null {
   switch (value) {
     case "matched_behavior":
+    case "interrupted_before_visible":
     case "fallback_state":
     case "true_mismatch":
     case "unexpected_idle":
@@ -1798,4 +1896,18 @@ function readSqlResolutionReason(
 
 function isDefinedNumber(value: number | null): value is number {
   return value !== null;
+}
+
+function readNotesJson(
+  value: SQLOutputValue | undefined,
+): Record<string, unknown> {
+  if (typeof value !== "string" || value.length === 0) {
+    return {};
+  }
+
+  try {
+    return asRecord(JSON.parse(value)) ?? {};
+  } catch {
+    return {};
+  }
 }

@@ -23,6 +23,7 @@ export interface CliOptions {
   provider: "claude" | "codex" | undefined;
   projectPath: string | undefined;
   sessionId: string | undefined;
+  currentDisplayedSession: boolean;
   outputPath: string | undefined;
   retentionPolicy: AnalyticsRetentionPolicy | undefined;
 }
@@ -50,6 +51,7 @@ export function parseCliOptions(
   let provider: "claude" | "codex" | undefined;
   let projectPath: string | undefined;
   let sessionId: string | undefined;
+  let currentDisplayedSession = false;
   let outputPath: string | undefined;
   let retentionPolicy: AnalyticsRetentionPolicy | undefined;
 
@@ -125,6 +127,11 @@ export function parseCliOptions(
       continue;
     }
 
+    if (token === "--current") {
+      currentDisplayedSession = true;
+      continue;
+    }
+
     if (token === "--output") {
       outputPath = argv[index + 1] ?? outputPath;
       index += 1;
@@ -156,6 +163,7 @@ export function parseCliOptions(
     provider,
     projectPath,
     sessionId,
+    currentDisplayedSession,
     outputPath,
     retentionPolicy,
   };
@@ -173,6 +181,7 @@ async function main(argv = process.argv.slice(2), env = process.env) {
     provider,
     projectPath,
     sessionId,
+    currentDisplayedSession,
     outputPath,
     retentionPolicy,
   } = parseCliOptions(argv, env);
@@ -219,6 +228,7 @@ async function main(argv = process.argv.slice(2), env = process.env) {
       provider,
       projectRoot: projectPath,
       sessionId,
+      currentDisplayedSession,
     });
     console.log(`Generated analytics report at ${resolvedOutputPath}`);
     return;

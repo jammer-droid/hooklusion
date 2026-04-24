@@ -257,8 +257,9 @@ describe("session registry", () => {
         isProcessAlive(pid) {
           return pid === 1111;
         },
+        staleAfterDeadPidMs: 30_000,
         staleWithoutPidAfterMs: 30_000,
-        prunedAt: 500,
+        prunedAt: 30_500,
       }),
     ).toEqual({
       removedSessionKeys: ["codex:dead"],
@@ -272,6 +273,37 @@ describe("session registry", () => {
     expect(
       registry.listSessions().map((session) => session.sessionKey),
     ).toEqual(["claude:alive"]);
+  });
+
+  it("keeps recently exited pid-backed sessions in the menu during the grace window", () => {
+    const registry = createSessionRegistry({ projectRoots: [PROJECT_ROOT] });
+
+    registry.registerEvent(
+      createEvent({ provider: "codex", sessionId: "recent", pid: 2222 }),
+      100,
+    );
+
+    expect(
+      registry.pruneSessions({
+        isProcessAlive() {
+          return false;
+        },
+        staleAfterDeadPidMs: 30_000,
+        staleWithoutPidAfterMs: 30_000,
+        prunedAt: 500,
+      }),
+    ).toEqual({
+      removedSessionKeys: [],
+      selection: {
+        mode: "auto",
+        activeSessionKey: "codex:recent",
+        pinnedSessionKey: null,
+        shouldDisplayEvent: false,
+      },
+    });
+    expect(
+      registry.listSessions().map((session) => session.sessionKey),
+    ).toEqual(["codex:recent"]);
   });
 
   it("keeps sessions without pid when inactivity TTL is disabled", () => {
@@ -291,6 +323,7 @@ describe("session registry", () => {
         isProcessAlive() {
           return true;
         },
+        staleAfterDeadPidMs: 30_000,
         staleWithoutPidAfterMs: null,
         prunedAt: 320,
       }),
