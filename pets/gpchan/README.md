@@ -1,6 +1,6 @@
 # GP Chan Pet Animations
 
-GP Chan animation assets resized to the Codex pet frame size (`192 x 208`) while preserving Hooklusion's Animation Studio animation names, frame counts, frame order, and timing.
+GP Chan animation assets resized to the Codex pet frame size (`192 x 208`) while preserving GP Chan animation names, frame counts, frame order, and timing.
 
 ## Preview
 
@@ -36,3 +36,51 @@ GP Chan animation assets resized to the Codex pet frame size (`192 x 208`) while
 
 - `animations/`: PNG frames grouped by animation name.
 - `gifs/`: GitHub-friendly GIF previews for each animation.
+
+## Applying These Frames As A Codex Pet
+
+Codex pets currently use a single spritesheet, not this folder structure directly. To turn these animations into a custom Codex pet, ask an agent to pack selected animations from `pets/gpchan/animations/` into Codex's fixed pet spritesheet format:
+
+- output folder: `~/.codex/pets/<pet-id>/`
+- required files: `pet.json` and `spritesheet.webp`
+- spritesheet size: `1536 x 1872`
+- grid: `8 columns x 9 rows`
+- frame size: `192 x 208`
+
+Codex row order:
+
+| Row | Codex state |
+| --- | --- |
+| 0 | `idle` |
+| 1 | `running-right` |
+| 2 | `running-left` |
+| 3 | `waving` |
+| 4 | `jumping` |
+| 5 | `failed` |
+| 6 | `waiting` |
+| 7 | `running` |
+| 8 | `review` |
+
+Example request:
+
+```text
+Using this repo's pets/gpchan/animations folder, create a Codex custom pet named GP Chan.
+
+Pack a 1536x1872 spritesheet.webp with 8 columns x 9 rows, 192x208 per frame.
+Use this row mapping:
+- row 0 idle: idle
+- row 1 running-right: drag_right
+- row 2 running-left: drag_left
+- row 3 waving: session_start
+- row 4 jumping: hover_in
+- row 5 failed: transition_out
+- row 6 waiting: thinking
+- row 7 running: tool_active
+- row 8 review: done
+
+If an animation has fewer than 8 frames, repeat its frames only as needed to fill that row.
+Create ~/.codex/pets/gpchan/pet.json and spritesheet.webp.
+Then tell me to refresh Codex from Personalization > Pets.
+```
+
+After the files are created, open Codex and use `Personalization > Pets > Refresh`. If the pet does not appear, restart Codex and refresh again.
