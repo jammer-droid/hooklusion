@@ -204,7 +204,7 @@ async function main(argv = process.argv.slice(2), env = process.env) {
       configPath: codexConfigPath,
     });
     console.log(
-      `Installed Codex hooks in ${codexHooksPath} and enabled codex_hooks in ${codexConfigPath}`,
+      `Installed Codex hooks in ${codexHooksPath} and enabled hooks in ${codexConfigPath}`,
     );
     return;
   }

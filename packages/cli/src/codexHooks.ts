@@ -4,6 +4,8 @@ import { dirname } from "node:path";
 const HOOKLUSION_MARKER = "hooklusion-codex-hook";
 const LEGACY_PROJECT_C_MARKER = "project-c-codex-hook";
 const DEFAULT_SERVER_URL = "http://127.0.0.1:47321/event";
+const CODEX_HOOKS_FEATURE = "hooks";
+const DEPRECATED_CODEX_HOOKS_FEATURE = "codex_hooks";
 
 type CodexHookEvent =
   | "SessionStart"
@@ -185,7 +187,12 @@ async function writeCodexHooks(hooksPath: string, config: CodexHooksConfig) {
 
 async function enableCodexHooksFeature(configPath: string) {
   const existingConfig = await readTextFileIfExists(configPath);
-  const nextConfig = setTomlFeatureFlag(existingConfig, "codex_hooks", true);
+  const nextConfig = setTomlFeatureFlag(
+    existingConfig,
+    CODEX_HOOKS_FEATURE,
+    true,
+    [DEPRECATED_CODEX_HOOKS_FEATURE],
+  );
 
   await mkdir(dirname(configPath), { recursive: true });
   await writeFile(configPath, nextConfig, "utf8");
@@ -195,6 +202,7 @@ function setTomlFeatureFlag(
   source: string,
   featureName: string,
   value: boolean,
+  deprecatedFeatureNames: string[] = [],
 ) {
   const lines = source.length > 0 ? source.split("\n") : [];
   const featureHeaderIndex = lines.findIndex(
@@ -208,6 +216,7 @@ function setTomlFeatureFlag(
   }
 
   let insertIndex = lines.length;
+  let existingFeatureIndex: number | undefined;
 
   for (let index = featureHeaderIndex + 1; index < lines.length; index += 1) {
     const line = lines[index];
@@ -217,10 +226,24 @@ function setTomlFeatureFlag(
       break;
     }
 
-    if (new RegExp(`^\\s*${escapeRegExp(featureName)}\\s*=`).test(line)) {
-      lines[index] = assignment;
-      return ensureTrailingNewline(lines.join("\n"));
+    if (
+      deprecatedFeatureNames.some((deprecatedName) =>
+        new RegExp(`^\\s*${escapeRegExp(deprecatedName)}\\s*=`).test(line),
+      )
+    ) {
+      lines.splice(index, 1);
+      index -= 1;
+      continue;
     }
+
+    if (new RegExp(`^\\s*${escapeRegExp(featureName)}\\s*=`).test(line)) {
+      existingFeatureIndex = index;
+    }
+  }
+
+  if (existingFeatureIndex !== undefined) {
+    lines[existingFeatureIndex] = assignment;
+    return ensureTrailingNewline(lines.join("\n"));
   }
 
   lines.splice(insertIndex, 0, assignment);

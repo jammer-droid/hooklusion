@@ -86,7 +86,7 @@ describe("Codex hook installer", () => {
     );
   });
 
-  it("enables codex_hooks without replacing other config", async () => {
+  it("enables hooks without replacing other config", async () => {
     const { hooksPath, configPath } = await createCodexFiles(
       {},
       'model = "gpt-5.4"\n\n[features]\njs_repl = true\n',
@@ -99,7 +99,24 @@ describe("Codex hook installer", () => {
     expect(config).toContain('model = "gpt-5.4"');
     expect(config).toContain("[features]");
     expect(config).toContain("js_repl = true");
-    expect(config).toContain("codex_hooks = true");
+    expect(config).toContain("hooks = true");
+    expect(config).not.toContain("codex_hooks");
+  });
+
+  it("migrates the deprecated codex_hooks feature flag", async () => {
+    const { hooksPath, configPath } = await createCodexFiles(
+      {},
+      "[features]\nhooks = false\ncodex_hooks = true\njs_repl = true\n",
+    );
+
+    await installCodexHooks({ hooksPath, configPath });
+
+    const config = await readFile(configPath, "utf8");
+
+    expect(config).toContain("[features]");
+    expect(config).toContain("hooks = true");
+    expect(config).toContain("js_repl = true");
+    expect(config).not.toContain("codex_hooks");
   });
 
   it("installs hook commands that are valid shell commands", async () => {
